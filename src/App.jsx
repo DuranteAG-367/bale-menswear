@@ -330,7 +330,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 📸 FASE 2: LOOKBOOK / MODELOS (SOLO VISIBLE EN V2 Y V3) */}
+            {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
             {activeVersion !== 'v1' && (
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
@@ -364,9 +364,9 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Modelo 3 */}
+                  {/* Modelo 3 (Reemplazado por modelo masculino con estilo urbano/techwear) */}
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=600" alt="Modelo 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div className="absolute bottom-6 left-6">
                       <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
