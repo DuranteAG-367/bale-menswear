@@ -5,6 +5,11 @@ import {
   ChevronRight, X, Lock, FileCode, Check, AlertCircle, ArrowLeft, ArrowRight
 } from 'lucide-react';
 
+// IMPORTAMOS LA AUTENTICACIÓN Y LOS COMPONENTES (FASE 1)
+import { useAuth } from './context/AuthContext';
+import Login from './components/Login';
+import Register from './components/Register';
+
 // === CONTEXTO Y CONFIGURACIÓN FIREBASE SIMULADA / SDK ===
 // En un entorno local React+Vite, estas variables se importan desde tu config/firebase.js
 /*
@@ -51,18 +56,23 @@ const BaleMonogramLogo = ({ size = "md" }) => {
 };
 
 export default function App() {
+  // HOOK DE FIREBASE AUTH (FASE 1)
+  const { user, logout } = useAuth();
+  
+  // ESTADOS DE MODALES DE LOGIN (FASE 1)
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
   const [activeVersion, setActiveVersion] = useState('v3'); // v1, v2, v3
   const [currentTab, setCurrentTab] = useState('shop'); // 'shop', 'admin', 'my-orders'
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [orders, setOrders] = useState([]);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isDocsOpen, setIsDocsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [user, setUser] = useState({ loggedIn: false, email: '', name: '' });
   
   // Checkout & Admin States
   const [checkoutStep, setCheckoutStep] = useState(1);
@@ -114,7 +124,7 @@ export default function App() {
       items: [...cart],
       total: cartTotal,
       status: 'En preparación',
-      customer: shippingInfo.name || user.name || 'Cliente BALE',
+      customer: shippingInfo.name || (user ? user.email.split('@')[0] : null) || 'Cliente BALE',
       address: `${shippingInfo.address}, ${shippingInfo.city}`
     };
 
@@ -214,22 +224,39 @@ export default function App() {
               <span className="hidden sm:inline font-semibold">Doc. Técnica TP2</span>
             </button>
 
-            {user.loggedIn ? (
-              <button
-                onClick={() => setCurrentTab(currentTab === 'my-orders' ? 'shop' : 'my-orders')}
-                className="flex items-center gap-2 text-xs border border-neutral-700 bg-neutral-900 hover:border-neutral-500 px-3 py-2 rounded-lg transition"
-              >
-                <User className="w-4 h-4 text-[#00C3FF]" />
-                <span className="hidden sm:inline">{user.name}</span>
-              </button>
+            {/* BOTONES DE AUTH CON FIREBASE (FASE 1) */}
+            {user ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentTab(currentTab === 'my-orders' ? 'shop' : 'my-orders')}
+                  className="flex items-center gap-2 text-xs border border-neutral-700 bg-neutral-900 hover:border-[#00C3FF] px-3 py-2 rounded-lg transition text-[#00C3FF]"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">{user.email.split('@')[0]}</span>
+                </button>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1.5 text-xs border border-red-900/50 hover:bg-red-900/30 text-red-400 px-3 py-2 rounded-lg transition"
+                >
+                  Salir
+                </button>
+              </div>
             ) : (
-              <button
-                onClick={() => setIsAuthOpen(true)}
-                className="flex items-center gap-2 text-xs border border-neutral-800 hover:border-[#00C3FF] px-3 py-2 rounded-lg transition"
-              >
-                <User className="w-4 h-4 text-neutral-400" />
-                <span className="hidden sm:inline">Ingresar</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowLogin(true)}
+                  className="flex items-center gap-2 text-xs border border-neutral-800 hover:border-[#00C3FF] text-neutral-400 hover:text-white px-3 py-2 rounded-lg transition"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Ingresar</span>
+                </button>
+                <button
+                  onClick={() => setShowRegister(true)}
+                  className="flex items-center gap-2 text-xs bg-[#00C3FF] text-black font-bold border border-[#00C3FF] hover:bg-[#00C3FF]/90 px-3 py-2 rounded-lg transition shadow-lg shadow-[#00C3FF]/20"
+                >
+                  <span className="hidden sm:inline">Registrarse</span>
+                </button>
+              </div>
             )}
 
             <button
@@ -712,6 +739,21 @@ VITE_FIREBASE_APP_ID=1:123456789:web:abcdef`}
             </button>
           </div>
         </div>
+      )}
+
+      {/* MODALES DE AUTENTICACIÓN (FASE 1) */}
+      {showLogin && (
+        <Login 
+          onClose={() => setShowLogin(false)} 
+          switchToRegister={() => { setShowLogin(false); setShowRegister(true); }}
+        />
+      )}
+
+      {showRegister && (
+        <Register 
+          onClose={() => setShowRegister(false)} 
+          switchToLogin={() => { setShowRegister(false); setShowLogin(true); }}
+        />
       )}
     </div>
   );
