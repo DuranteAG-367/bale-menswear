@@ -364,18 +364,15 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Modelo 3 (Reemplazado por modelo masculino con estilo urbano/techwear) */}
+                 {/* Modelo 3 (Modelo masculino techwear definitivo) */}
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div className="absolute bottom-6 left-6">
                       <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
                       <p className="text-white font-bold text-lg">Cargo & Utility</p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
 
             {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
             {activeVersion !== 'v1' && (
