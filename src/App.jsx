@@ -24,14 +24,18 @@ const firebaseConfig = {
 };
 */
 
-// Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste)
+// Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste) + FASE 3 (Promos y Accesorios)
 const INITIAL_PRODUCTS = [
-  { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
+  { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, originalPrice: 111250, isPromo: true, discount: 20, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
   { id: '2', name: 'BALE Technical Cargo Pant', category: 'Pantalones', price: 95000, stock: 8, sizes: ['S', 'M', 'L', 'XL'], color: 'Negro', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800', description: 'Pantalón cargo táctico con tiras ajustables y múltiples bolsillos funcionales.' },
   { id: '3', name: 'BALE Cyan Monogram Tee', category: 'Remeras', price: 42000, stock: 25, sizes: ['S', 'M', 'L', 'XL', 'XXL'], color: 'Blanco/Celeste', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800', description: 'Remera 100% algodón peinado 24/1. Corte boxy fit exclusivo con estampa BL frontal.' },
-  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 145000, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera campera inflable térmica resistente al agua con forrería interior celeste.' },
+  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 116000, originalPrice: 145000, isPromo: true, discount: 20, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera inflable térmica resistente al agua con forrería interior celeste.' },
   { id: '5', name: 'BALE Classic Oxford Shirt', category: 'Camisas', price: 68000, stock: 14, sizes: ['S', 'M', 'L', 'XL'], color: 'Blanco', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800', description: 'Camisa manga larga Oxford con botones de resina y logo BL bordado en tono pastel.' },
-  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' }
+  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' },
+  // NUEVOS PRODUCTOS FASE 3 (ACCESORIOS Y OFERTAS)
+  { id: '7', name: 'BALE Signature Cap', category: 'Accesorios', price: 28000, stock: 30, sizes: ['Único'], color: 'Negro', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=800', description: 'Gorra de gabardina premium con logo bordado en 3D color celeste cyan y ajuste metálico.' },
+  { id: '8', name: 'Black Void Oversized Tee', category: 'Remeras', price: 34000, originalPrice: 42500, isPromo: true, discount: 20, stock: 18, sizes: ['M', 'L', 'XL', 'XXL'], color: 'Negro Washed', image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=800', description: 'Remera con proceso de lavado desgastado. Corte extra amplio y caída pesada.' },
+  { id: '9', name: 'Tech Parachute Pants', category: 'Pantalones', price: 85000, stock: 10, sizes: ['S', 'M', 'L'], color: 'Gris Oscuro', image: 'https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=800', description: 'Pantalón estilo paracaídas ultra liviano con elásticos ajustables en la botamanga.' }
 ];
 
 // LOGO BALE CON B EN BLANCO Y L EN CELESTE
@@ -145,8 +149,8 @@ export default function App() {
     showNotice(`¡Pedido #${newOrder.id} realizado con éxito!`);
   };
 
-  // Categorías
-  const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado'];
+  // Categorías ampliadas con Accesorios
+  const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado', 'Accesorios'];
 
   const filteredProducts = products.filter(p => {
     const matchesCat = selectedCategory === 'Todas' || p.category === selectedCategory;
@@ -280,499 +284,537 @@ export default function App() {
                 </span>
               )}
             </button>
-          </div>
         </div>
-      </header>
+      </div>
+    </header>
 
-      {/* CUERPO PRINCIPAL DE LA APLICACIÓN */}
-      <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {/* TABA 1: CATÁLOGO Y TIENDA */}
-        {currentTab === 'shop' && (
-          <div>
+    {/* CUERPO PRINCIPAL DE LA APLICACIÓN */}
+    <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+      {/* TABA 1: CATÁLOGO Y TIENDA */}
+      {currentTab === 'shop' && (
+        <div>
+          
+          {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
+          <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
+            {/* VIDEO DE FONDO (Mixkit Free Stock Video - Urban Boy) */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-700"
+            >
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
+            </video>
             
-            {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
-            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
-              {/* VIDEO DE FONDO (Mixkit Free Stock Video - Urban Boy) */}
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-700"
-              >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
-              </video>
-              
-              {/* OVERLAY DEGRADADO OSCURO PARA LEER EL TEXTO */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
+            {/* OVERLAY DEGRADADO OSCURO PARA LEER EL TEXTO */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
 
-              {/* CONTENIDO DEL BANNER */}
-              <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="space-y-5 max-w-xl text-center md:text-left">
-                  <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
-                    <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span> NUEVA COLECCIÓN 2026
-                  </span>
-                  <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase drop-shadow-2xl">
-                    URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
-                  </h1>
-                  <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
-                    Descubrí la nueva línea de indumentaria masculina. Corte minimalista, diseño urbano y materiales premium fabricados en Buenos Aires.
-                  </p>
-                  <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })} className="mt-4 flex items-center gap-2 bg-white text-black font-black px-6 py-3 rounded-xl uppercase text-xs hover:bg-[#00C3FF] transition shadow-xl w-fit mx-auto md:mx-0">
-                    Ver Catálogo <ArrowRight className="w-4 h-4" />
-                  </button>
+            {/* CONTENIDO DEL BANNER */}
+            <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="space-y-5 max-w-xl text-center md:text-left">
+                <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
+                  <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span> NUEVA COLECCIÓN 2026
+                </span>
+                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase drop-shadow-2xl">
+                  URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
+                </h1>
+                <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                  Descubrí la nueva línea de indumentaria masculina. Corte minimalista, diseño urbano y materiales premium fabricados en Buenos Aires.
+                </p>
+                <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })} className="mt-4 flex items-center gap-2 bg-white text-black font-black px-6 py-3 rounded-xl uppercase text-xs hover:bg-[#00C3FF] transition shadow-xl w-fit mx-auto md:mx-0">
+                  Ver Catálogo <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+              
+              <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/40 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
+                <BaleMonogramLogo size="lg" />
+                <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
+          {activeVersion !== 'v1' && (
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-white uppercase tracking-wider">Campaña <span className="text-[#00C3FF]">Editorial</span></h2>
+                  <p className="text-xs text-neutral-500 mt-1">Cómo se ven nuestras prendas en las calles.</p>
+                </div>
+                <button className="text-xs text-[#00C3FF] hover:text-white transition uppercase font-bold flex items-center gap-1">
+                  <Play className="w-4 h-4"/> Ver Fashion Film
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Modelo 1 */}
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                  <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600" alt="Modelo 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6">
+                    <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Streetwear</p>
+                    <p className="text-white font-bold text-lg">Oversized Hoodie</p>
+                  </div>
                 </div>
                 
-                <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/40 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
-                  <BaleMonogramLogo size="lg" />
-                  <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
+                {/* Modelo 2 */}
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer hidden md:block">
+                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Modelo 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6">
+                    <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Urbano Minimal</p>
+                    <p className="text-white font-bold text-lg">Dark Aesthetics</p>
+                  </div>
+                </div>
+
+                {/* Modelo 3 */}
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                  <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6">
+                    <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
+                    <p className="text-white font-bold text-lg">Cargo & Utility</p>
+                  </div>
                 </div>
               </div>
             </div>
+          )}
 
-            {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
-            {activeVersion !== 'v1' && (
-              <div className="mb-12">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="text-2xl font-black text-white uppercase tracking-wider">Campaña <span className="text-[#00C3FF]">Editorial</span></h2>
-                    <p className="text-xs text-neutral-500 mt-1">Cómo se ven nuestras prendas en las calles.</p>
-                  </div>
-                  <button className="text-xs text-[#00C3FF] hover:text-white transition uppercase font-bold flex items-center gap-1">
-                    <Play className="w-4 h-4"/> Ver Fashion Film
+          {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
+          {activeVersion !== 'v1' && (
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-neutral-800">
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                      selectedCategory === cat
+                        ? 'bg-[#00C3FF] text-black shadow-lg shadow-[#00C3FF]/20'
+                        : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+                    }`}
+                  >
+                    {cat}
                   </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Modelo 1 */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600" alt="Modelo 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    <div className="absolute bottom-6 left-6">
-                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Streetwear</p>
-                      <p className="text-white font-bold text-lg">Oversized Hoodie</p>
-                    </div>
-                  </div>
-                  
-                  {/* Modelo 2 */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Modelo 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    <div className="absolute bottom-6 left-6">
-                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Urbano Minimal</p>
-                      <p className="text-white font-bold text-lg">Dark Aesthetics</p>
-                    </div>
-                  </div>
-
-                  {/* Modelo 3 (Reemplazado por modelo masculino con estilo urbano/techwear) */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    <div className="absolute bottom-6 left-6">
-                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
-                      <p className="text-white font-bold text-lg">Cargo & Utility</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-            )}
-
-            {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
-            {activeVersion !== 'v1' && (
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-neutral-800">
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                        selectedCategory === cat
-                          ? 'bg-[#00C3FF] text-black shadow-lg shadow-[#00C3FF]/20'
-                          : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-                <div className="text-xs text-neutral-500">
-                  Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
-                </div>
+              <div className="text-xs text-neutral-500">
+                Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
               </div>
-            )}
+            </div>
+          )}
 
-            {/* GRILLA DE PRODUCTOS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="group bg-neutral-900/60 border border-neutral-800/80 hover:border-[#00C3FF]/50 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col hover:shadow-xl hover:shadow-[#00C3FF]/5"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-neutral-950">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30">
-                      {product.category}
+          {/* GRILLA DE PRODUCTOS CON PROMOCIONES */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="group bg-neutral-900/60 border border-neutral-800/80 hover:border-[#00C3FF]/50 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col hover:shadow-xl hover:shadow-[#00C3FF]/5"
+              >
+                <div className="relative aspect-square overflow-hidden bg-neutral-950">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30 z-10">
+                    {product.category}
+                  </span>
+
+                  {/* BADGE DE OFERTA ANIMADO (FASE 3) */}
+                  {product.isPromo && (
+                    <span className="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase animate-pulse shadow-lg shadow-red-600/40 z-10">
+                      {product.discount}% OFF
                     </span>
-                    {product.stock < 5 && (
-                      <span className="absolute top-3 right-3 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md">
-                        Últimas {product.stock} un.
-                      </span>
-                    )}
-                  </div>
+                  )}
 
-                  <div className="p-5 flex flex-col flex-1 justify-between">
-                    <div>
-                      <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
-                        {product.name}
-                      </h3>
-                      <p className="text-neutral-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
-                    </div>
+                  {product.stock < 5 && (
+                    <span className={`absolute ${product.isPromo ? 'bottom-3 right-3' : 'top-3 right-3'} bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md z-10`}>
+                      Últimas {product.stock} un.
+                    </span>
+                  )}
+                </div>
 
-                    <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
-                      <div>
-                        <span className="text-xs text-neutral-500 block">Precio</span>
-                        <span className="text-lg font-black text-white">
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
+                      {product.name}
+                    </h3>
+                    <p className="text-neutral-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+                      {product.description}
+                    </p>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-neutral-500 block">Precio</span>
+                    {product.isPromo ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-neutral-500 line-through">
+                          ${product.originalPrice?.toLocaleString('es-AR')}
+                        </span>
+                        <span className="text-lg font-black text-[#00C3FF]">
                           ${product.price.toLocaleString('es-AR')}
                         </span>
                       </div>
+                    ) : (
+                      <span className="text-lg font-black text-white">
+                        ${product.price.toLocaleString('es-AR')}
+                      </span>
+                  )}
+                </div>
 
+                <button
+                  onClick={() => setSelectedProduct(product)}
+                  className="flex items-center gap-1.5 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
+                >
+                  <span>Ver Talles</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+          ))}
+        </div>
+      </div>
+      )}
+
+      {/* TAB 2: PANEL DE ADMINISTRACIÓN / CRUD DE INVENTARIO */}
+      {currentTab === 'admin' && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+            <div>
+              <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
+                <Shield className="w-6 h-6 text-[#00C3FF]" /> Panel de Gestión BALE
+              </h2>
+              <p className="text-xs text-neutral-400 mt-1">Control de inventario y pedidos en tiempo real con Cloud Firestore</p>
+            </div>
+            <button
+              onClick={() => setProducts(INITIAL_PRODUCTS)}
+              className="flex items-center gap-2 bg-neutral-900 border border-neutral-700 hover:border-[#00C3FF] text-xs px-3 py-2 rounded-lg transition"
+            >
+              <RefreshCw className="w-4 h-4 text-[#00C3FF]" />
+              Restaurar Stock Inicial
+            </button>
+          </div>
+
+          {/* TABLA DE PRODUCTOS EN FIRESTORE */}
+          <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
+                <tr>
+                  <th className="p-4">Prenda</th>
+                  <th className="p-4">Categoría</th>
+                  <th className="p-4">Precio</th>
+                  <th className="p-4">Stock</th>
+                  <th className="p-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-800">
+                {products.map((p) => (
+                  <tr key={p.id} className="hover:bg-neutral-800/40 transition">
+                    <td className="p-4 flex items-center gap-3">
+                      <img src={p.image} className="w-10 h-10 object-cover rounded-lg bg-black" />
+                      <span className="font-bold text-white">{p.name} {p.isPromo && <span className="ml-2 text-[9px] bg-red-600 px-1.5 py-0.5 rounded text-white font-bold">OFERTA</span>}</span>
+                    </td>
+                    <td className="p-4"><span className="text-[#00C3FF] bg-[#00C3FF]/10 px-2 py-0.5 rounded border border-[#00C3FF]/20">{p.category}</span></td>
+                    <td className="p-4 font-bold text-white">${p.price.toLocaleString('es-AR')}</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            const updated = products.map(item => item.id === p.id ? { ...item, stock: Math.max(0, item.stock - 1) } : item);
+                            setProducts(updated);
+                          }}
+                          className="w-6 h-6 rounded bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center font-bold text-white"
+                        >-</button>
+                        <span className={`font-mono font-bold ${p.stock < 5 ? 'text-amber-400' : 'text-white'}`}>{p.stock}</span>
+                        <button
+                          onClick={() => {
+                            const updated = products.map(item => item.id === p.id ? { ...item, stock: item.stock + 1 } : item);
+                            setProducts(updated);
+                          }}
+                          className="w-6 h-6 rounded bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center font-bold text-white"
+                        >+</button>
+                      </div>
+                    </td>
+                    <td className="p-4 text-right">
                       <button
-                        onClick={() => setSelectedProduct(product)}
-                        className="flex items-center gap-1.5 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
+                        onClick={() => {
+                          setProducts(products.filter(item => item.id !== p.id));
+                          showNotice(`Producto eliminado`, 'error');
+                        }}
+                        className="p-2 hover:bg-red-950/50 hover:text-red-400 text-neutral-500 rounded-lg transition"
                       >
-                        <span>Ver Talles</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+    )}
+
+    {/* TAB 3: MIS COMPRAS */}
+    {currentTab === 'my-orders' && (
+      <div className="space-y-6">
+        <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
+          <Package className="w-6 h-6 text-[#00C3FF]" /> Mis Compras en BALE
+        </h2>
+
+        {orders.length === 0 ? (
+          <div className="p-12 text-center border border-neutral-800 rounded-2xl bg-neutral-900/40 space-y-3">
+            <p className="text-neutral-400 text-sm">Aún no has realizado compras con esta cuenta.</p>
+            <button
+              onClick={() => setCurrentTab('shop')}
+              className="inline-block bg-[#00C3FF] text-black font-bold text-xs px-6 py-2.5 rounded-xl hover:bg-[#00C3FF]/90 transition"
+            >
+              Ir al Catálogo
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {orders.map((ord) => (
+              <div key={ord.id} className="p-6 border border-neutral-800 bg-neutral-900/60 rounded-2xl flex flex-col md:flex-row justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold text-white text-base">Orden #{ord.id}</span>
+                    <span className="text-xs bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 px-2.5 py-0.5 rounded-full font-semibold">
+                      {ord.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-neutral-500 mt-1">Fecha: {ord.date} | Entrega en: {ord.address}</p>
+                  <div className="mt-3 space-y-1">
+                    {ord.items.map(item => (
+                      <div key={item.key} className="text-xs text-neutral-300 flex items-center gap-2">
+                        <span>• {item.name} ({item.selectedSize})</span>
+                        <span className="text-neutral-500">x{item.quantity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right flex md:flex-col justify-between items-end">
+                  <span className="text-xs text-neutral-500">Total abonado</span>
+                  <span className="text-xl font-black text-white">${ord.total.toLocaleString('es-AR')}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+  </main>
+
+  {/* MODAL DETALLE DE PRODUCTO */}
+  {selectedProduct && (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
+        <button
+          onClick={() => setSelectedProduct(null)}
+          className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-800 transition z-10"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="relative">
+          <img src={selectedProduct.image} className="w-full h-64 object-cover" />
+          {selectedProduct.isPromo && (
+            <span className="absolute bottom-4 right-4 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-md uppercase shadow-lg shadow-red-600/40">
+              {selectedProduct.discount}% OFF EXCLUSIVO
+            </span>
+          )}
+        </div>
+
+        <div className="p-6 space-y-4">
+          <div>
+            <span className="text-[10px] uppercase font-bold text-[#00C3FF] bg-[#00C3FF]/10 px-2.5 py-1 rounded border border-[#00C3FF]/30">
+              {selectedProduct.category}
+            </span>
+            <h2 className="text-2xl font-black text-white mt-2">{selectedProduct.name}</h2>
+            <p className="text-xs text-neutral-400 mt-2 leading-relaxed">{selectedProduct.description}</p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-neutral-300 uppercase mb-2">Selecciona tu Talle:</label>
+            <div className="flex gap-2 flex-wrap">
+              {selectedProduct.sizes.map((sz) => (
+                <button
+                  key={sz}
+                  onClick={() => setSelectedProduct({ ...selectedProduct, activeSize: sz })}
+                  className={`flex-1 min-w-[60px] py-2 rounded-xl text-xs font-bold border transition ${
+                    selectedProduct.activeSize === sz
+                      ? 'border-[#00C3FF] bg-[#00C3FF] text-black'
+                      : 'border-neutral-800 bg-neutral-950 text-white hover:border-neutral-700'
+                  }`}
+                >
+                  {sz}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
+            <div>
+              <span className="text-xs text-neutral-500 block">Precio Final</span>
+              {selectedProduct.isPromo ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-neutral-500 line-through">
+                    ${selectedProduct.originalPrice?.toLocaleString('es-AR')}
+                  </span>
+                  <span className="text-2xl font-black text-[#00C3FF]">
+                    ${selectedProduct.price.toLocaleString('es-AR')}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-2xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
+              )}
+            </div>
+
+            <button
+              onClick={() => {
+                addToCart(selectedProduct, selectedProduct.activeSize);
+                setSelectedProduct(null);
+              }}
+              className="bg-[#00C3FF] text-black hover:bg-[#00C3FF]/90 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-[#00C3FF]/20"
+            >
+              Agregar a la Bolsa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* DRAWER DEL CARRITO / CHECKOUT */}
+  {isCartOpen && (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
+      <div className="w-full max-w-md bg-neutral-950 border-l border-neutral-800 h-full p-6 flex flex-col justify-between overflow-y-auto">
+        <div>
+          <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5 text-[#00C3FF]" />
+              <h3 className="font-bold text-white text-lg">Tu Bolsa BALE</h3>
+            </div>
+            <button onClick={() => setIsCartOpen(false)} className="text-neutral-400 hover:text-white">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {cart.length === 0 ? (
+            <div className="py-16 text-center space-y-3">
+              <p className="text-neutral-500 text-sm">Tu bolsa está vacía.</p>
+            </div>
+          ) : (
+            <div className="mt-6 space-y-4 divide-y divide-neutral-900">
+              {cart.map((item) => (
+                <div key={item.key} className="pt-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <img src={item.image} className="w-14 h-14 object-cover rounded-xl bg-neutral-900" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">{item.name}</h4>
+                      <span className="text-[10px] text-[#00C3FF] block">Talle: {item.selectedSize}</span>
+                      <span className="text-xs text-white font-mono font-bold mt-1 flex items-center gap-2">
+                        ${(item.price * item.quantity).toLocaleString('es-AR')}
+                        {item.isPromo && <span className="bg-red-600 text-white text-[9px] px-1 rounded">OFERTA</span>}
+                      </span>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-neutral-400">x{item.quantity}</span>
+                    <button onClick={() => removeFromCart(item.key)} className="text-neutral-600 hover:text-red-400">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* TAB 2: PANEL DE ADMINISTRACIÓN / CRUD DE INVENTARIO */}
-        {currentTab === 'admin' && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
-              <div>
-                <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
-                  <Shield className="w-6 h-6 text-[#00C3FF]" /> Panel de Gestión BALE
-                </h2>
-                <p className="text-xs text-neutral-400 mt-1">Control de inventario y pedidos en tiempo real con Cloud Firestore</p>
-              </div>
+        {cart.length > 0 && (
+          <div className="pt-6 border-t border-neutral-800 space-y-4">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-neutral-400">Subtotal</span>
+              <span className="font-bold text-white">${cartTotal.toLocaleString('es-AR')}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-neutral-400">Envío en Argentina</span>
+              <span className="text-[#00C3FF] font-bold">GRATIS</span>
+            </div>
+
+            {checkoutStep === 1 ? (
               <button
-                onClick={() => setProducts(INITIAL_PRODUCTS)}
-                className="flex items-center gap-2 bg-neutral-900 border border-neutral-700 hover:border-[#00C3FF] text-xs px-3 py-2 rounded-lg transition"
+                onClick={() => setCheckoutStep(2)}
+                className="w-full bg-[#00C3FF] text-black font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition"
               >
-                <RefreshCw className="w-4 h-4 text-[#00C3FF]" />
-                Restaurar Stock Inicial
+                Continuar Checkout
               </button>
-            </div>
-
-            {/* TABLA DE PRODUCTOS EN FIRESTORE */}
-            <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
-                  <tr>
-                    <th className="p-4">Prenda</th>
-                    <th className="p-4">Categoría</th>
-                    <th className="p-4">Precio</th>
-                    <th className="p-4">Stock</th>
-                    <th className="p-4 text-right">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-800">
-                  {products.map((p) => (
-                    <tr key={p.id} className="hover:bg-neutral-800/40 transition">
-                      <td className="p-4 flex items-center gap-3">
-                        <img src={p.image} className="w-10 h-10 object-cover rounded-lg bg-black" />
-                        <span className="font-bold text-white">{p.name}</span>
-                      </td>
-                      <td className="p-4"><span className="text-[#00C3FF] bg-[#00C3FF]/10 px-2 py-0.5 rounded border border-[#00C3FF]/20">{p.category}</span></td>
-                      <td className="p-4 font-bold text-white">${p.price.toLocaleString('es-AR')}</td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => {
-                              const updated = products.map(item => item.id === p.id ? { ...item, stock: Math.max(0, item.stock - 1) } : item);
-                              setProducts(updated);
-                            }}
-                            className="w-6 h-6 rounded bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center font-bold text-white"
-                          >-</button>
-                          <span className={`font-mono font-bold ${p.stock < 5 ? 'text-amber-400' : 'text-white'}`}>{p.stock}</span>
-                          <button
-                            onClick={() => {
-                              const updated = products.map(item => item.id === p.id ? { ...item, stock: item.stock + 1 } : item);
-                              setProducts(updated);
-                            }}
-                            className="w-6 h-6 rounded bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center font-bold text-white"
-                          >+</button>
-                        </div>
-                      </td>
-                      <td className="p-4 text-right">
-                        <button
-                          onClick={() => {
-                            setProducts(products.filter(item => item.id !== p.id));
-                            showNotice(`Producto eliminado`, 'error');
-                          }}
-                          className="p-2 hover:bg-red-950/50 hover:text-red-400 text-neutral-500 rounded-lg transition"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 3: MIS COMPRAS */}
-        {currentTab === 'my-orders' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
-              <Package className="w-6 h-6 text-[#00C3FF]" /> Mis Compras en BALE
-            </h2>
-
-            {orders.length === 0 ? (
-              <div className="p-12 text-center border border-neutral-800 rounded-2xl bg-neutral-900/40 space-y-3">
-                <p className="text-neutral-400 text-sm">Aún no has realizado compras con esta cuenta.</p>
-                <button
-                  onClick={() => setCurrentTab('shop')}
-                  className="inline-block bg-[#00C3FF] text-black font-bold text-xs px-6 py-2.5 rounded-xl hover:bg-[#00C3FF]/90 transition"
-                >
-                  Ir al Catálogo
-                </button>
-              </div>
             ) : (
-              <div className="space-y-4">
-                {orders.map((ord) => (
-                  <div key={ord.id} className="p-6 border border-neutral-800 bg-neutral-900/60 rounded-2xl flex flex-col md:flex-row justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-bold text-white text-base">Orden #{ord.id}</span>
-                        <span className="text-xs bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 px-2.5 py-0.5 rounded-full font-semibold">
-                          {ord.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-neutral-500 mt-1">Fecha: {ord.date} | Entrega en: {ord.address}</p>
-                      <div className="mt-3 space-y-1">
-                        {ord.items.map(item => (
-                          <div key={item.key} className="text-xs text-neutral-300 flex items-center gap-2">
-                            <span>• {item.name} ({item.selectedSize})</span>
-                            <span className="text-neutral-500">x{item.quantity}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="text-right flex md:flex-col justify-between items-end">
-                      <span className="text-xs text-neutral-500">Total abonado</span>
-                      <span className="text-xl font-black text-white">${ord.total.toLocaleString('es-AR')}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <form onSubmit={handleCheckout} className="space-y-3 pt-2">
+                <input
+                  type="text"
+                  placeholder="Nombre y Apellido"
+                  required
+                  value={shippingInfo.name}
+                  onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
+                />
+                <input
+                  type="text"
+                  placeholder="Dirección de Envío"
+                  required
+                  value={shippingInfo.address}
+                  onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
+                />
+                <button
+                  type="submit"
+                  className="w-full bg-[#00C3FF] text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition shadow-lg shadow-[#00C3FF]/20"
+                >
+                  Confirmar y Pagar ${cartTotal.toLocaleString('es-AR')}
+                </button>
+              </form>
             )}
           </div>
         )}
-      </main>
+      </div>
+    </div>
+  )}
 
-      {/* MODAL DETALLE DE PRODUCTO */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
-            <button
-              onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-800 transition z-10"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <img src={selectedProduct.image} className="w-full h-64 object-cover" />
-
-            <div className="p-6 space-y-4">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-[#00C3FF] bg-[#00C3FF]/10 px-2.5 py-1 rounded border border-[#00C3FF]/30">
-                  {selectedProduct.category}
-                </span>
-                <h2 className="text-2xl font-black text-white mt-2">{selectedProduct.name}</h2>
-                <p className="text-xs text-neutral-400 mt-2 leading-relaxed">{selectedProduct.description}</p>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-neutral-300 uppercase mb-2">Selecciona tu Talle:</label>
-                <div className="flex gap-2">
-                  {selectedProduct.sizes.map((sz) => (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedProduct({ ...selectedProduct, activeSize: sz })}
-                      className={`flex-1 py-2 rounded-xl text-xs font-bold border transition ${
-                        selectedProduct.activeSize === sz
-                          ? 'border-[#00C3FF] bg-[#00C3FF] text-black'
-                          : 'border-neutral-800 bg-neutral-950 text-white hover:border-neutral-700'
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-neutral-500 block">Precio Final</span>
-                  <span className="text-2xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
-                </div>
-
-                <button
-                  onClick={() => {
-                    addToCart(selectedProduct, selectedProduct.activeSize);
-                    setSelectedProduct(null);
-                  }}
-                  className="bg-[#00C3FF] text-black hover:bg-[#00C3FF]/90 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-[#00C3FF]/20"
-                >
-                  Agregar a la Bolsa
-                </button>
-              </div>
-            </div>
+  {/* MODAL DOCUMENTACIÓN TÉCNICA Y JUSTIFICACIÓN CROMÁTICA TP2 UADE */}
+  {isDocsOpen && (
+    <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-2xl w-full p-6 space-y-6 text-xs leading-relaxed max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+          <div className="flex items-center gap-2">
+            <FileCode className="w-5 h-5 text-[#00C3FF]" />
+            <h3 className="text-base font-black text-white uppercase">Documentación Técnica & Justificación Visual</h3>
           </div>
+          <button onClick={() => setIsDocsOpen(false)} className="text-neutral-400 hover:text-white">
+            <X className="w-5 h-5" />
+          </button>
         </div>
-      )}
 
-      {/* DRAWER DEL CARRITO / CHECKOUT */}
-      {isCartOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
-          <div className="w-full max-w-md bg-neutral-950 border-l border-neutral-800 h-full p-6 flex flex-col justify-between overflow-y-auto">
-            <div>
-              <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
-                <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-[#00C3FF]" />
-                  <h3 className="font-bold text-white text-lg">Tu Bolsa BALE</h3>
-                </div>
-                <button onClick={() => setIsCartOpen(false)} className="text-neutral-400 hover:text-white">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {cart.length === 0 ? (
-                <div className="py-16 text-center space-y-3">
-                  <p className="text-neutral-500 text-sm">Tu bolsa está vacía.</p>
-                </div>
-              ) : (
-                <div className="mt-6 space-y-4 divide-y divide-neutral-900">
-                  {cart.map((item) => (
-                    <div key={item.key} className="pt-4 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <img src={item.image} className="w-14 h-14 object-cover rounded-xl bg-neutral-900" />
-                        <div>
-                          <h4 className="text-xs font-bold text-white">{item.name}</h4>
-                          <span className="text-[10px] text-[#00C3FF] block">Talle: {item.selectedSize}</span>
-                          <span className="text-xs text-white font-mono font-bold mt-1 block">
-                            ${(item.price * item.quantity).toLocaleString('es-AR')}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs font-bold text-neutral-400">x{item.quantity}</span>
-                        <button onClick={() => removeFromCart(item.key)} className="text-neutral-600 hover:text-red-400">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div className="pt-6 border-t border-neutral-800 space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Subtotal</span>
-                  <span className="font-bold text-white">${cartTotal.toLocaleString('es-AR')}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Envío en Argentina</span>
-                  <span className="text-[#00C3FF] font-bold">GRATIS</span>
-                </div>
-
-                {checkoutStep === 1 ? (
-                  <button
-                    onClick={() => setCheckoutStep(2)}
-                    className="w-full bg-[#00C3FF] text-black font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition"
-                  >
-                    Continuar Checkout
-                  </button>
-                ) : (
-                  <form onSubmit={handleCheckout} className="space-y-3 pt-2">
-                    <input
-                      type="text"
-                      placeholder="Nombre y Apellido"
-                      required
-                      value={shippingInfo.name}
-                      onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Dirección de Envío"
-                      required
-                      value={shippingInfo.address}
-                      onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
-                    />
-                    <button
-                      type="submit"
-                      className="w-full bg-[#00C3FF] text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition shadow-lg shadow-[#00C3FF]/20"
-                    >
-                      Confirmar y Pagar ${cartTotal.toLocaleString('es-AR')}
-                    </button>
-                  </form>
-                )}
-              </div>
-            )}
+        <div className="space-y-4">
+          <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
+            <h4 className="font-bold text-[#00C3FF] uppercase text-xs mb-2">1. Justificación de la Paleta de Colores</h4>
+            <p className="text-neutral-300">
+              La identidad visual de <strong>BALE</strong> se compone de tres colores fundamentales:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1 text-neutral-400">
+              <li><strong className="text-white">Negro (#0A0A0C):</strong> Color dominante de fondo. Otorga sobriedad, elegancia streetwear y reduce la fatiga visual.</li>
+              <li><strong className="text-white">Blanco (#FFFFFF):</strong> Utilizado para contraste en textos primarios y elementos de la marca (Monograma B).</li>
+              <li><strong className="text-[#00C3FF]">Celeste Cyan (#00C3FF):</strong> Color de acento para la letra <strong>L</strong> del isotipo, botones principales de compra, badges activos y estados clave de la tienda.</li>
+            </ul>
           </div>
-        </div>
-      )}
 
-      {/* MODAL DOCUMENTACIÓN TÉCNICA Y JUSTIFICACIÓN CROMÁTICA TP2 UADE */}
-      {isDocsOpen && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-2xl w-full p-6 space-y-6 text-xs leading-relaxed max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
-              <div className="flex items-center gap-2">
-                <FileCode className="w-5 h-5 text-[#00C3FF]" />
-                <h3 className="text-base font-black text-white uppercase">Documentación Técnica & Justificación Visual</h3>
-              </div>
-              <button onClick={() => setIsDocsOpen(false)} className="text-neutral-400 hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
-                <h4 className="font-bold text-[#00C3FF] uppercase text-xs mb-2">1. Justificación de la Paleta de Colores</h4>
-                <p className="text-neutral-300">
-                  La identidad visual de <strong>BALE</strong> se compone de tres colores fundamentales:
-                </p>
-                <ul className="list-disc pl-5 mt-2 space-y-1 text-neutral-400">
-                  <li><strong className="text-white">Negro (#0A0A0C):</strong> Color dominante de fondo. Otorga sobriedad, elegancia streetwear y reduce la fatiga visual.</li>
-                  <li><strong className="text-white">Blanco (#FFFFFF):</strong> Utilizado para contraste en textos primarios y elementos de la marca (Monograma B).</li>
-                  <li><strong className="text-[#00C3FF]">Celeste Cyan (#00C3FF):</strong> Color de acento para la letra <strong>L</strong> del isotipo, botones principales de compra, badges activos y estados clave de la tienda.</li>
-                </ul>
-              </div>
-
-              <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
-                <h4 className="font-bold text-white uppercase text-xs mb-2">2. Reglas de Seguridad Cloud Firestore</h4>
-                <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
+          <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
+            <h4 className="font-bold text-white uppercase text-xs mb-2">2. Reglas de Seguridad Cloud Firestore</h4>
+            <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
 {`rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -786,44 +828,44 @@ service cloud.firestore {
     }
   }
 }`}
-                </pre>
-              </div>
+            </pre>
+          </div>
 
-              <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
-                <h4 className="font-bold text-white uppercase text-xs mb-2">3. Configuración .env.example</h4>
-                <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
+          <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
+            <h4 className="font-bold text-white uppercase text-xs mb-2">3. Configuración .env.example</h4>
+            <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
 {`VITE_FIREBASE_API_KEY=tu_api_key_aqui
 VITE_FIREBASE_AUTH_DOMAIN=bale-menswear.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=bale-menswear
 VITE_FIREBASE_APP_ID=1:123456789:web:abcdef`}
-                </pre>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setIsDocsOpen(false)}
-              className="w-full bg-[#00C3FF] text-black font-bold py-3 rounded-xl uppercase text-xs"
-            >
-              Cerrar Ventana
-            </button>
+            </pre>
           </div>
         </div>
-      )}
 
-      {/* MODALES DE AUTENTICACIÓN (FASE 1) */}
-      {showLogin && (
-        <Login 
-          onClose={() => setShowLogin(false)} 
-          switchToRegister={() => { setShowLogin(false); setShowRegister(true); }}
-        />
-      )}
-
-      {showRegister && (
-        <Register 
-          onClose={() => setShowRegister(false)} 
-          switchToLogin={() => { setShowRegister(false); setShowLogin(true); }}
-        />
-      )}
+        <button
+          onClick={() => setIsDocsOpen(false)}
+          className="w-full bg-[#00C3FF] text-black font-bold py-3 rounded-xl uppercase text-xs"
+        >
+          Cerrar Ventana
+        </button>
+      </div>
     </div>
+  )}
+
+  {/* MODALES DE AUTENTICACIÓN (FASE 1) */}
+  {showLogin && (
+    <Login 
+      onClose={() => setShowLogin(false)} 
+      switchToRegister={() => { setShowLogin(false); setShowRegister(true); }}
+    />
+  )}
+
+  {showRegister && (
+    <Register 
+      onClose={() => setShowRegister(false)} 
+      switchToLogin={() => { setShowRegister(false); setShowLogin(true); }}
+    />
+  )}
+</div>
   );
 }
