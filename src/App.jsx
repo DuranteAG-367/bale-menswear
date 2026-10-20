@@ -10,26 +10,12 @@ import { useAuth } from './context/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 
-// === CONTEXTO Y CONFIGURACIÓN FIREBASE SIMULADA / SDK ===
-// En un entorno local React+Vite, estas variables se importan desde tu config/firebase.js
-/*
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
-};
-*/
-
 // Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste)
 const INITIAL_PRODUCTS = [
   { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
   { id: '2', name: 'BALE Technical Cargo Pant', category: 'Pantalones', price: 95000, stock: 8, sizes: ['S', 'M', 'L', 'XL'], color: 'Negro', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800', description: 'Pantalón cargo táctico con tiras ajustables y múltiples bolsillos funcionales.' },
   { id: '3', name: 'BALE Cyan Monogram Tee', category: 'Remeras', price: 42000, stock: 25, sizes: ['S', 'M', 'L', 'XL', 'XXL'], color: 'Blanco/Celeste', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800', description: 'Remera 100% algodón peinado 24/1. Corte boxy fit exclusivo con estampa BL frontal.' },
-  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 145000, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera campera inflable térmica resistente al agua con forrería interior celeste.' },
+  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 145000, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera inflable térmica resistente al agua con forrería interior celeste.' },
   { id: '5', name: 'BALE Classic Oxford Shirt', category: 'Camisas', price: 68000, stock: 14, sizes: ['S', 'M', 'L', 'XL'], color: 'Blanco', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800', description: 'Camisa manga larga Oxford con botones de resina y logo BL bordado en tono pastel.' },
   { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' }
 ];
@@ -56,15 +42,13 @@ const BaleMonogramLogo = ({ size = "md" }) => {
 };
 
 export default function App() {
-  // HOOK DE FIREBASE AUTH (FASE 1)
   const { user, logout } = useAuth();
   
-  // ESTADOS DE MODALES DE LOGIN (FASE 1)
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  const [activeVersion, setActiveVersion] = useState('v3'); // v1, v2, v3
-  const [currentTab, setCurrentTab] = useState('shop'); // 'shop', 'admin', 'my-orders'
+  const [activeVersion, setActiveVersion] = useState('v3');
+  const [currentTab, setCurrentTab] = useState('shop');
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [orders, setOrders] = useState([]);
   const [cart, setCart] = useState([]);
@@ -74,19 +58,15 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   
-  // Checkout & Admin States
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [shippingInfo, setShippingInfo] = useState({ name: '', address: '', city: '', phone: '', paymentMethod: 'MercadoPago' });
-  const [editingProduct, setEditingProduct] = useState(null);
   const [notification, setNotification] = useState(null);
 
-  // Auto-notification helper
   const showNotice = (msg, type = 'success') => {
     setNotification({ msg, type });
     setTimeout(() => setNotification(null), 3500);
   };
 
-  // Carrito handlers
   const addToCart = (product, size) => {
     if (!size) {
       showNotice('Por favor selecciona un talle', 'error');
@@ -113,7 +93,6 @@ export default function App() {
 
   const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  // Proceso de Compra (Checkout)
   const handleCheckout = (e) => {
     e.preventDefault();
     if (cart.length === 0) return;
@@ -128,7 +107,6 @@ export default function App() {
       address: `${shippingInfo.address}, ${shippingInfo.city}`
     };
 
-    // Descontar stock
     const updatedProducts = products.map(p => {
       const cartItem = cart.find(c => c.id === p.id);
       if (cartItem) {
@@ -145,7 +123,6 @@ export default function App() {
     showNotice(`¡Pedido #${newOrder.id} realizado con éxito!`);
   };
 
-  // Categorías
   const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado'];
 
   const filteredProducts = products.filter(p => {
@@ -156,7 +133,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0C] text-white font-sans selection:bg-[#00C3FF] selection:text-black">
-      {/* Toast Notification */}
       {notification && (
         <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl border backdrop-blur-md transition-all animate-bounce ${
           notification.type === 'error' ? 'bg-red-950/90 border-red-500 text-red-200' : 'bg-[#00C3FF]/20 border-[#00C3FF] text-white'
@@ -166,7 +142,6 @@ export default function App() {
         </div>
       )}
 
-      {/* BANNER DE SELECCIÓN DE VERSIÓN (DEMO PARA UADE TP2) */}
       <div className="bg-neutral-900 border-b border-neutral-800 py-2 px-4 text-xs text-neutral-400 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span>
@@ -190,16 +165,12 @@ export default function App() {
         </div>
       </div>
 
-      {/* HEADER / NAVBAR PRINCIPAL */}
       <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b border-neutral-800 px-4 lg:px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          
-          {/* LOGO BALE */}
           <button onClick={() => setCurrentTab('shop')} className="text-left hover:opacity-90 transition">
             <BaleMonogramLogo size="md" />
           </button>
 
-          {/* BUSCADOR (SOLO V2 y V3) */}
           {activeVersion !== 'v1' && (
             <div className="hidden md:flex items-center bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2 w-80 focus-within:border-[#00C3FF] transition-all">
               <Search className="w-4 h-4 text-neutral-400 mr-2" />
@@ -213,7 +184,6 @@ export default function App() {
             </div>
           )}
 
-          {/* MENÚ DE ACCIONES */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsDocsOpen(true)}
@@ -224,7 +194,6 @@ export default function App() {
               <span className="hidden sm:inline font-semibold">Doc. Técnica TP2</span>
             </button>
 
-            {/* BOTONES DE AUTH CON FIREBASE (FASE 1) */}
             {user ? (
               <div className="flex items-center gap-2">
                 <button
@@ -284,15 +253,10 @@ export default function App() {
         </div>
       </header>
 
-      {/* CUERPO PRINCIPAL DE LA APLICACIÓN */}
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {/* TABA 1: CATÁLOGO Y TIENDA */}
         {currentTab === 'shop' && (
           <div>
-            
-            {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
             <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
-              {/* VIDEO DE FONDO (Mixkit Free Stock Video - Urban Boy) */}
               <video
                 autoPlay
                 loop
@@ -303,10 +267,8 @@ export default function App() {
                 <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
               </video>
               
-              {/* OVERLAY DEGRADADO OSCURO PARA LEER EL TEXTO */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
 
-              {/* CONTENIDO DEL BANNER */}
               <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="space-y-5 max-w-xl text-center md:text-left">
                   <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
@@ -330,7 +292,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
+            {/* 📸 CAMPAÑA EDITORIAL (2 MODELOS MASCULINOS PRINCIPALES) */}
             {activeVersion !== 'v1' && (
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
@@ -343,10 +305,10 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Modelo 1 */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600" alt="Modelo 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="relative aspect-[16/9] md:aspect-[16/10] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800" alt="Modelo 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div className="absolute bottom-6 left-6">
                       <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Streetwear</p>
@@ -355,26 +317,18 @@ export default function App() {
                   </div>
                   
                   {/* Modelo 2 */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Modelo 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" />
+                  <div className="relative aspect-[16/9] md:aspect-[16/10] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800" alt="Modelo 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div className="absolute bottom-6 left-6">
                       <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Urbano Minimal</p>
                       <p className="text-white font-bold text-lg">Dark Aesthetics</p>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
 
-                 {/* Modelo 3 (Modelo masculino techwear definitivo) */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    <div className="absolute bottom-6 left-6">
-                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
-                      <p className="text-white font-bold text-lg">Cargo & Utility</p>
-                    </div>
-                  </div>
-
-            {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
             {activeVersion !== 'v1' && (
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-neutral-800">
                 <div className="flex flex-wrap gap-2">
@@ -398,7 +352,6 @@ export default function App() {
               </div>
             )}
 
-            {/* GRILLA DE PRODUCTOS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <div
@@ -454,7 +407,6 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 2: PANEL DE ADMINISTRACIÓN / CRUD DE INVENTARIO */}
         {currentTab === 'admin' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
@@ -473,7 +425,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* TABLA DE PRODUCTOS EN FIRESTORE */}
             <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
               <table className="w-full text-left text-xs">
                 <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
@@ -532,7 +483,6 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 3: MIS COMPRAS */}
         {currentTab === 'my-orders' && (
           <div className="space-y-6">
             <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
@@ -582,7 +532,6 @@ export default function App() {
         )}
       </main>
 
-      {/* MODAL DETALLE DE PRODUCTO */}
       {selectedProduct && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
@@ -644,7 +593,6 @@ export default function App() {
         </div>
       )}
 
-      {/* DRAWER DEL CARRITO / CHECKOUT */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
           <div className="w-full max-w-md bg-neutral-950 border-l border-neutral-800 h-full p-6 flex flex-col justify-between overflow-y-auto">
@@ -740,7 +688,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DOCUMENTACIÓN TÉCNICA Y JUSTIFICACIÓN CROMÁTICA TP2 UADE */}
       {isDocsOpen && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-2xl w-full p-6 space-y-6 text-xs leading-relaxed max-h-[90vh] overflow-y-auto">
@@ -807,7 +754,6 @@ VITE_FIREBASE_APP_ID=1:123456789:web:abcdef`}
         </div>
       )}
 
-      {/* MODALES DE AUTENTICACIÓN (FASE 1) */}
       {showLogin && (
         <Login 
           onClose={() => setShowLogin(false)} 
