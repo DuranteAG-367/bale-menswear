@@ -10,18 +10,28 @@ import { useAuth } from './context/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 
-// === CATÁLOGO AMPLIADO CON PROMOCIONES (FASE 3) ===
+// === CONTEXTO Y CONFIGURACIÓN FIREBASE SIMULADA / SDK ===
+// En un entorno local React+Vite, estas variables se importan desde tu config/firebase.js
+/*
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
+*/
+
+// Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste)
 const INITIAL_PRODUCTS = [
-  { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, originalPrice: 111250, isPromo: true, discount: 20, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
+  { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
   { id: '2', name: 'BALE Technical Cargo Pant', category: 'Pantalones', price: 95000, stock: 8, sizes: ['S', 'M', 'L', 'XL'], color: 'Negro', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800', description: 'Pantalón cargo táctico con tiras ajustables y múltiples bolsillos funcionales.' },
   { id: '3', name: 'BALE Cyan Monogram Tee', category: 'Remeras', price: 42000, stock: 25, sizes: ['S', 'M', 'L', 'XL', 'XXL'], color: 'Blanco/Celeste', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800', description: 'Remera 100% algodón peinado 24/1. Corte boxy fit exclusivo con estampa BL frontal.' },
-  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 116000, originalPrice: 145000, isPromo: true, discount: 20, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera inflable térmica resistente al agua con forrería interior celeste.' },
+  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 145000, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera campera inflable térmica resistente al agua con forrería interior celeste.' },
   { id: '5', name: 'BALE Classic Oxford Shirt', category: 'Camisas', price: 68000, stock: 14, sizes: ['S', 'M', 'L', 'XL'], color: 'Blanco', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800', description: 'Camisa manga larga Oxford con botones de resina y logo BL bordado en tono pastel.' },
-  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' },
-  // NUEVOS PRODUCTOS FASE 3
-  { id: '7', name: 'BALE Signature Cap', category: 'Accesorios', price: 28000, stock: 30, sizes: ['Único'], color: 'Negro', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=800', description: 'Gorra de gabardina premium con logo bordado en 3D color celeste cyan y ajuste metálico.' },
-  { id: '8', name: 'Black Void Oversized Tee', category: 'Remeras', price: 34000, originalPrice: 42500, isPromo: true, discount: 20, stock: 18, sizes: ['M', 'L', 'XL', 'XXL'], color: 'Negro Washed', image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=800', description: 'Remera con proceso de lavado desgastado. Corte extra amplio y caída pesada.' },
-  { id: '9', name: 'Tech Parachute Pants', category: 'Pantalones', price: 85000, stock: 10, sizes: ['S', 'M', 'L'], color: 'Gris Oscuro', image: 'https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=800', description: 'Pantalón estilo paracaídas ultra liviano con elásticos ajustables en la botamanga.' }
+  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' }
 ];
 
 // LOGO BALE CON B EN BLANCO Y L EN CELESTE
@@ -135,8 +145,8 @@ export default function App() {
     showNotice(`¡Pedido #${newOrder.id} realizado con éxito!`);
   };
 
-  // Categorías ampliadas con Accesorios
-  const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado', 'Accesorios'];
+  // Categorías
+  const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado'];
 
   const filteredProducts = products.filter(p => {
     const matchesCat = selectedCategory === 'Todas' || p.category === selectedCategory;
@@ -195,7 +205,7 @@ export default function App() {
               <Search className="w-4 h-4 text-neutral-400 mr-2" />
               <input
                 type="text"
-                placeholder="Buscar remeras, camperas, accesorios..."
+                placeholder="Buscar remeras, camperas, talle..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-transparent text-sm w-full focus:outline-none text-white placeholder-neutral-500"
@@ -282,6 +292,7 @@ export default function App() {
             
             {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
             <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
+              {/* VIDEO DE FONDO (Mixkit Free Stock Video - Urban Boy) */}
               <video
                 autoPlay
                 loop
@@ -292,8 +303,10 @@ export default function App() {
                 <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
               </video>
               
+              {/* OVERLAY DEGRADADO OSCURO PARA LEER EL TEXTO */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
 
+              {/* CONTENIDO DEL BANNER */}
               <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="space-y-5 max-w-xl text-center md:text-left">
                   <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
@@ -317,7 +330,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 📸 FASE 2: LOOKBOOK / 3 MODELOS MASCULINOS */}
+            {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
             {activeVersion !== 'v1' && (
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
@@ -351,9 +364,9 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Modelo 3 */}
+                  {/* Modelo 3 (Reemplazado por modelo masculino con estilo urbano/techwear) */}
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=600" alt="Modelo 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80&w=600" alt="Modelo 3 Masculino" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div className="absolute bottom-6 left-6">
                       <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
@@ -388,7 +401,7 @@ export default function App() {
               </div>
             )}
 
-            {/* GRILLA DE PRODUCTOS CON PROMOCIONES */}
+            {/* GRILLA DE PRODUCTOS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <div
@@ -401,19 +414,11 @@ export default function App() {
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30 z-10">
+                    <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30">
                       {product.category}
                     </span>
-
-                    {/* BADGE DE OFERTA ANIMADO */}
-                    {product.isPromo && (
-                      <span className="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase animate-pulse shadow-lg shadow-red-600/40 z-10">
-                        {product.discount}% OFF
-                      </span>
-                    )}
-
                     {product.stock < 5 && (
-                      <span className={`absolute ${product.isPromo ? 'bottom-3 right-3' : 'top-3 right-3'} bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md z-10`}>
+                      <span className="absolute top-3 right-3 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md">
                         Últimas {product.stock} un.
                       </span>
                     )}
@@ -432,20 +437,9 @@ export default function App() {
                     <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
                       <div>
                         <span className="text-xs text-neutral-500 block">Precio</span>
-                        {product.isPromo ? (
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-neutral-500 line-through">
-                              ${product.originalPrice?.toLocaleString('es-AR')}
-                            </span>
-                            <span className="text-lg font-black text-[#00C3FF]">
-                              ${product.price.toLocaleString('es-AR')}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-lg font-black text-white">
-                            ${product.price.toLocaleString('es-AR')}
-                          </span>
-                        )}
+                        <span className="text-lg font-black text-white">
+                          ${product.price.toLocaleString('es-AR')}
+                        </span>
                       </div>
 
                       <button
@@ -482,6 +476,7 @@ export default function App() {
               </button>
             </div>
 
+            {/* TABLA DE PRODUCTOS EN FIRESTORE */}
             <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
               <table className="w-full text-left text-xs">
                 <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
@@ -498,7 +493,7 @@ export default function App() {
                     <tr key={p.id} className="hover:bg-neutral-800/40 transition">
                       <td className="p-4 flex items-center gap-3">
                         <img src={p.image} className="w-10 h-10 object-cover rounded-lg bg-black" />
-                        <span className="font-bold text-white">{p.name} {p.isPromo && <span className="ml-2 text-[9px] bg-red-600 px-1.5 py-0.5 rounded text-white font-bold">OFERTA</span>}</span>
+                        <span className="font-bold text-white">{p.name}</span>
                       </td>
                       <td className="p-4"><span className="text-[#00C3FF] bg-[#00C3FF]/10 px-2 py-0.5 rounded border border-[#00C3FF]/20">{p.category}</span></td>
                       <td className="p-4 font-bold text-white">${p.price.toLocaleString('es-AR')}</td>
@@ -601,14 +596,7 @@ export default function App() {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="relative">
-              <img src={selectedProduct.image} className="w-full h-64 object-cover" />
-              {selectedProduct.isPromo && (
-                <span className="absolute bottom-4 right-4 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-md uppercase shadow-lg shadow-red-600/40">
-                  {selectedProduct.discount}% OFF EXCLUSIVO
-                </span>
-              )}
-            </div>
+            <img src={selectedProduct.image} className="w-full h-64 object-cover" />
 
             <div className="p-6 space-y-4">
               <div>
@@ -621,12 +609,12 @@ export default function App() {
 
               <div>
                 <label className="block text-xs font-bold text-neutral-300 uppercase mb-2">Selecciona tu Talle:</label>
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2">
                   {selectedProduct.sizes.map((sz) => (
                     <button
                       key={sz}
                       onClick={() => setSelectedProduct({ ...selectedProduct, activeSize: sz })}
-                      className={`flex-1 min-w-[60px] py-2 rounded-xl text-xs font-bold border transition ${
+                      className={`flex-1 py-2 rounded-xl text-xs font-bold border transition ${
                         selectedProduct.activeSize === sz
                           ? 'border-[#00C3FF] bg-[#00C3FF] text-black'
                           : 'border-neutral-800 bg-neutral-950 text-white hover:border-neutral-700'
@@ -641,29 +629,19 @@ export default function App() {
               <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
                 <div>
                   <span className="text-xs text-neutral-500 block">Precio Final</span>
-                  {selectedProduct.isPromo ? (
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-neutral-500 line-through">
-                        ${selectedProduct.originalPrice?.toLocaleString('es-AR')}
-                      </span>
-                      <span className="text-2xl font-black text-[#00C3FF]">
-                        ${selectedProduct.price.toLocaleString('es-AR')}
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-2xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
-                  )}
-              </div>
+                  <span className="text-2xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
+                </div>
 
-              <button
-                onClick={() => {
-                  addToCart(selectedProduct, selectedProduct.activeSize);
-                  setSelectedProduct(null);
-                }}
-                className="bg-[#00C3FF] text-black hover:bg-[#00C3FF]/90 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-[#00C3FF]/20"
-              >
-                Agregar a la Bolsa
-              </button>
+                <button
+                  onClick={() => {
+                    addToCart(selectedProduct, selectedProduct.activeSize);
+                    setSelectedProduct(null);
+                  }}
+                  className="bg-[#00C3FF] text-black hover:bg-[#00C3FF]/90 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-[#00C3FF]/20"
+                >
+                  Agregar a la Bolsa
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -697,76 +675,75 @@ export default function App() {
                         <div>
                           <h4 className="text-xs font-bold text-white">{item.name}</h4>
                           <span className="text-[10px] text-[#00C3FF] block">Talle: {item.selectedSize}</span>
-                          <span className="text-xs text-white font-mono font-bold mt-1 flex items-center gap-2">
+                          <span className="text-xs text-white font-mono font-bold mt-1 block">
                             ${(item.price * item.quantity).toLocaleString('es-AR')}
-                            {item.isPromo && <span className="bg-red-600 text-white text-[9px] px-1 rounded">OFERTA</span>}
                           </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold text-neutral-400">x{item.quantity}</span>
+                        <button onClick={() => removeFromCart(item.key)} className="text-neutral-600 hover:text-red-400">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs font-bold text-neutral-400">x{item.quantity}</span>
-                      <button onClick={() => removeFromCart(item.key)} className="text-neutral-600 hover:text-red-400">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+            {cart.length > 0 && (
+              <div className="pt-6 border-t border-neutral-800 space-y-4">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-neutral-400">Subtotal</span>
+                  <span className="font-bold text-white">${cartTotal.toLocaleString('es-AR')}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-neutral-400">Envío en Argentina</span>
+                  <span className="text-[#00C3FF] font-bold">GRATIS</span>
+                </div>
+
+                {checkoutStep === 1 ? (
+                  <button
+                    onClick={() => setCheckoutStep(2)}
+                    className="w-full bg-[#00C3FF] text-black font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition"
+                  >
+                    Continuar Checkout
+                  </button>
+                ) : (
+                  <form onSubmit={handleCheckout} className="space-y-3 pt-2">
+                    <input
+                      type="text"
+                      placeholder="Nombre y Apellido"
+                      required
+                      value={shippingInfo.name}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Dirección de Envío"
+                      required
+                      value={shippingInfo.address}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-[#00C3FF] text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition shadow-lg shadow-[#00C3FF]/20"
+                    >
+                      Confirmar y Pagar ${cartTotal.toLocaleString('es-AR')}
+                    </button>
+                  </form>
+                )}
               </div>
             )}
           </div>
-
-          {cart.length > 0 && (
-            <div className="pt-6 border-t border-neutral-800 space-y-4">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-neutral-400">Subtotal</span>
-                <span className="font-bold text-white">${cartTotal.toLocaleString('es-AR')}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-neutral-400">Envío en Argentina</span>
-                <span className="text-[#00C3FF] font-bold">GRATIS</span>
-              </div>
-
-              {checkoutStep === 1 ? (
-                <button
-                  onClick={() => setCheckoutStep(2)}
-                  className="w-full bg-[#00C3FF] text-black font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition"
-                >
-                  Continuar Checkout
-                </button>
-              ) : (
-                <form onSubmit={handleCheckout} className="space-y-3 pt-2">
-                  <input
-                    type="text"
-                    placeholder="Nombre y Apellido"
-                    required
-                    value={shippingInfo.name}
-                    onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Dirección de Envío"
-                    required
-                    value={shippingInfo.address}
-                    onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-[#00C3FF] outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-[#00C3FF] text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider hover:bg-[#00C3FF]/90 transition shadow-lg shadow-[#00C3FF]/20"
-                  >
-                    Confirmar y Pagar ${cartTotal.toLocaleString('es-AR')}
-                  </button>
-                </form>
-              )}
-            </div>
-          )}
         </div>
-      </div>
       )}
 
-      {/* MODAL DOCUMENTACIÓN TÉCNICA */}
+      {/* MODAL DOCUMENTACIÓN TÉCNICA Y JUSTIFICACIÓN CROMÁTICA TP2 UADE */}
       {isDocsOpen && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-2xl w-full p-6 space-y-6 text-xs leading-relaxed max-h-[90vh] overflow-y-auto">
@@ -775,21 +752,78 @@ export default function App() {
                 <FileCode className="w-5 h-5 text-[#00C3FF]" />
                 <h3 className="text-base font-black text-white uppercase">Documentación Técnica & Justificación Visual</h3>
               </div>
-              <button onClick={() => setIsDocsOpen(false)} className="text-neutral-400 hover:text-white"><X className="w-5 h-5" /></button>
+              <button onClick={() => setIsDocsOpen(false)} className="text-neutral-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
             </div>
+
             <div className="space-y-4">
               <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
                 <h4 className="font-bold text-[#00C3FF] uppercase text-xs mb-2">1. Justificación de la Paleta de Colores</h4>
-                <p className="text-neutral-300">La identidad visual de <strong>BALE</strong> combina Negro (#0A0A0C), Blanco (#FFFFFF) y Celeste Cyan (#00C3FF).</p>
+                <p className="text-neutral-300">
+                  La identidad visual de <strong>BALE</strong> se compone de tres colores fundamentales:
+                </p>
+                <ul className="list-disc pl-5 mt-2 space-y-1 text-neutral-400">
+                  <li><strong className="text-white">Negro (#0A0A0C):</strong> Color dominante de fondo. Otorga sobriedad, elegancia streetwear y reduce la fatiga visual.</li>
+                  <li><strong className="text-white">Blanco (#FFFFFF):</strong> Utilizado para contraste en textos primarios y elementos de la marca (Monograma B).</li>
+                  <li><strong className="text-[#00C3FF]">Celeste Cyan (#00C3FF):</strong> Color de acento para la letra <strong>L</strong> del isotipo, botones principales de compra, badges activos y estados clave de la tienda.</li>
+                </ul>
+              </div>
+
+              <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
+                <h4 className="font-bold text-white uppercase text-xs mb-2">2. Reglas de Seguridad Cloud Firestore</h4>
+                <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
+{`rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /bale_products/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /bale_orders/{document} {
+      allow create: if true;
+      allow read, update: if request.auth != null;
+    }
+  }
+}`}
+                </pre>
+              </div>
+
+              <div className="p-4 bg-black/50 border border-neutral-800 rounded-xl">
+                <h4 className="font-bold text-white uppercase text-xs mb-2">3. Configuración .env.example</h4>
+                <pre className="bg-neutral-950 p-3 rounded-lg border border-neutral-800 font-mono text-[11px] text-neutral-300 overflow-x-auto">
+{`VITE_FIREBASE_API_KEY=tu_api_key_aqui
+VITE_FIREBASE_AUTH_DOMAIN=bale-menswear.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=bale-menswear
+VITE_FIREBASE_APP_ID=1:123456789:web:abcdef`}
+                </pre>
               </div>
             </div>
-            <button onClick={() => setIsDocsOpen(false)} className="w-full bg-[#00C3FF] text-black font-bold py-3 rounded-xl uppercase text-xs">Cerrar Ventana</button>
+
+            <button
+              onClick={() => setIsDocsOpen(false)}
+              className="w-full bg-[#00C3FF] text-black font-bold py-3 rounded-xl uppercase text-xs"
+            >
+              Cerrar Ventana
+            </button>
           </div>
         </div>
       )}
 
-      {showLogin && <Login onClose={() => setShowLogin(false)} switchToRegister={() => { setShowLogin(false); setShowRegister(true); }} />}
-      {showRegister && <Register onClose={() => setShowRegister(false)} switchToLogin={() => { setShowRegister(false); setShowLogin(true); }} />}
+      {/* MODALES DE AUTENTICACIÓN (FASE 1) */}
+      {showLogin && (
+        <Login 
+          onClose={() => setShowLogin(false)} 
+          switchToRegister={() => { setShowLogin(false); setShowRegister(true); }}
+        />
+      )}
+
+      {showRegister && (
+        <Register 
+          onClose={() => setShowRegister(false)} 
+          switchToLogin={() => { setShowRegister(false); setShowLogin(true); }}
+        />
+      )}
     </div>
   );
 }
