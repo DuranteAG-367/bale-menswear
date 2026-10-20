@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   ShoppingBag, User, Search, SlidersHorizontal, Shield, 
   Trash2, Plus, Edit, RefreshCw, CheckCircle, Package, 
-  ChevronRight, X, Lock, FileCode, Check, AlertCircle, ArrowLeft, ArrowRight
+  ChevronRight, X, Lock, FileCode, Check, AlertCircle, ArrowLeft, ArrowRight, Play
 } from 'lucide-react';
 
 // IMPORTAMOS LA AUTENTICACIÓN Y LOS COMPONENTES (FASE 1)
@@ -289,24 +289,93 @@ export default function App() {
         {/* TABA 1: CATÁLOGO Y TIENDA */}
         {currentTab === 'shop' && (
           <div>
-            {/* BANNER HERO DE BRANDING */}
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-black via-neutral-900 to-neutral-950 border border-neutral-800 p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="space-y-4 max-w-xl text-center md:text-left">
-                <span className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-[#00C3FF]/10 text-[#00C3FF] border border-[#00C3FF]/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00C3FF]"></span> NUEVA COLECCIÓN 2026
-                </span>
-                <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight uppercase">
-                  URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
-                </h1>
-                <p className="text-neutral-400 text-sm md:text-base leading-relaxed">
-                  Indumentaria masculina de corte minimalista y diseño urbano. Fabricada con materiales premium en Buenos Aires.
-                </p>
-              </div>
-              <div className="border border-neutral-800 p-6 rounded-2xl bg-black/40 backdrop-blur-sm text-center">
-                <BaleMonogramLogo size="lg" />
-                <p className="text-xs text-neutral-400 mt-4 font-mono">BLACK / WHITE / CYAN</p>
+            
+            {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
+              {/* VIDEO DE FONDO (Mixkit Free Stock Video - Urban Boy) */}
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-700"
+              >
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
+              </video>
+              
+              {/* OVERLAY DEGRADADO OSCURO PARA LEER EL TEXTO */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
+
+              {/* CONTENIDO DEL BANNER */}
+              <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="space-y-5 max-w-xl text-center md:text-left">
+                  <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
+                    <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span> NUEVA COLECCIÓN 2026
+                  </span>
+                  <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase drop-shadow-2xl">
+                    URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
+                  </h1>
+                  <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                    Descubrí la nueva línea de indumentaria masculina. Corte minimalista, diseño urbano y materiales premium fabricados en Buenos Aires.
+                  </p>
+                  <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })} className="mt-4 flex items-center gap-2 bg-white text-black font-black px-6 py-3 rounded-xl uppercase text-xs hover:bg-[#00C3FF] transition shadow-xl w-fit mx-auto md:mx-0">
+                    Ver Catálogo <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/40 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
+                  <BaleMonogramLogo size="lg" />
+                  <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
+                </div>
               </div>
             </div>
+
+            {/* 📸 FASE 2: LOOKBOOK / MODELOS (SOLO VISIBLE EN V2 Y V3) */}
+            {activeVersion !== 'v1' && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-black text-white uppercase tracking-wider">Campaña <span className="text-[#00C3FF]">Editorial</span></h2>
+                    <p className="text-xs text-neutral-500 mt-1">Cómo se ven nuestras prendas en las calles.</p>
+                  </div>
+                  <button className="text-xs text-[#00C3FF] hover:text-white transition uppercase font-bold flex items-center gap-1">
+                    <Play className="w-4 h-4"/> Ver Fashion Film
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Modelo 1 */}
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600" alt="Modelo 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6">
+                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Streetwear</p>
+                      <p className="text-white font-bold text-lg">Oversized Hoodie</p>
+                    </div>
+                  </div>
+                  
+                  {/* Modelo 2 */}
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Modelo 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6">
+                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Urbano Minimal</p>
+                      <p className="text-white font-bold text-lg">Dark Aesthetics</p>
+                    </div>
+                  </div>
+
+                  {/* Modelo 3 */}
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden group border border-neutral-800 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=600" alt="Modelo 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6">
+                      <p className="text-[#00C3FF] text-[10px] font-black tracking-widest uppercase mb-1">Techwear</p>
+                      <p className="text-white font-bold text-lg">Cargo & Utility</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
             {activeVersion !== 'v1' && (
@@ -522,7 +591,7 @@ export default function App() {
           <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
             <button
               onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-800 transition"
+              className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-800 transition z-10"
             >
               <X className="w-5 h-5" />
             </button>
