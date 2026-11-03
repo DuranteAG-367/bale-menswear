@@ -3,7 +3,7 @@ import {
   ShoppingBag, User, Search, SlidersHorizontal, Shield, 
   Trash2, Plus, Edit, RefreshCw, CheckCircle, Package, 
   ChevronRight, X, Lock, FileCode, Check, AlertCircle, ArrowLeft, ArrowRight, Play,
-  Users, Tag, Percent, Eye, CreditCard
+  Users, Tag, Percent, Eye, CreditCard, Heart, MapPin, Star, Ruler, Ticket
 } from 'lucide-react';
 
 // IMPORTAMOS LA AUTENTICACIÓN Y LOS COMPONENTES (FASE 1)
@@ -24,17 +24,40 @@ const firebaseConfig = {
 };
 */
 
-// Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste) + FASE 3 (Promos y Accesorios)
+// Catálogo inicial con la temática de ropa masculina BALE (Negro, Blanco, Celeste) + FASE 3 + RESEÑAS
 const INITIAL_PRODUCTS = [
-  { id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, originalPrice: 111250, isPromo: true, promoType: 'percentage', discount: 20, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.' },
-  { id: '2', name: 'BALE Technical Cargo Pant', category: 'Pantalones', price: 95000, stock: 8, sizes: ['S', 'M', 'L', 'XL'], color: 'Negro', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800', description: 'Pantalón cargo táctico con tiras ajustables y múltiples bolsillos funcionales.' },
-  { id: '3', name: 'BALE Cyan Monogram Tee', category: 'Remeras', price: 42000, originalPrice: 42000, isPromo: true, promoType: '2x1', discount: 0, stock: 25, sizes: ['S', 'M', 'L', 'XL', 'XXL'], color: 'Blanco/Celeste', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800', description: 'Remera 100% algodón peinado 24/1. Corte boxy fit exclusivo con estampa BL frontal.' },
-  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 116000, originalPrice: 145000, isPromo: true, promoType: 'percentage', discount: 20, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera inflable térmica resistente al agua con forrería interior celeste.' },
-  { id: '5', name: 'BALE Classic Oxford Shirt', category: 'Camisas', price: 68000, stock: 14, sizes: ['S', 'M', 'L', 'XL'], color: 'Blanco', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800', description: 'Camisa manga larga Oxford con botones de resina y logo BL bordado en tono pastel.' },
-  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.' },
-  { id: '7', name: 'BALE Signature Cap', category: 'Accesorios', price: 28000, stock: 30, sizes: ['Único'], color: 'Negro', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=800', description: 'Gorra de gabardina premium con logo bordado en 3D color celeste cyan y ajuste metálico.' },
-  { id: '8', name: 'Black Void Oversized Tee', category: 'Remeras', price: 34000, originalPrice: 42500, isPromo: true, promoType: 'percentage', discount: 20, stock: 18, sizes: ['M', 'L', 'XL', 'XXL'], color: 'Negro Washed', image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=800', description: 'Remera con proceso de lavado desgastado. Corte extra amplio y caída pesada.' },
-  { id: '9', name: 'Tech Parachute Pants', category: 'Pantalones', price: 85000, stock: 10, sizes: ['S', 'M', 'L'], color: 'Gris Oscuro', image: 'https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=800', description: 'Pantalón estilo paracaídas ultra liviano con elásticos ajustables en la botamanga.' }
+  { 
+    id: '1', name: 'BALE Oversized Cyan Hoodie', category: 'Abrigos', price: 89000, originalPrice: 111250, isPromo: true, promoType: 'percentage', discount: 20, stock: 12, sizes: ['M', 'L', 'XL'], color: 'Negro/Celeste', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800', description: 'Buzo con capucha heavy-weight 480Gsm. Estampado serigráfico en la espalda y bordado en el pecho.',
+    reviews: [
+      { id: 1, user: 'Gonzalo M.', rating: 5, comment: 'La calidad del frisa es tremenda, bien pesado como me gusta.', date: '20/10/2026' },
+      { id: 2, user: 'Tomás R.', rating: 4, comment: 'Calce oversized perfecto. Pedí L y mido 1.80m.', date: '15/10/2026' }
+    ]
+  },
+  { 
+    id: '2', name: 'BALE Technical Cargo Pant', category: 'Pantalones', price: 95000, stock: 8, sizes: ['S', 'M', 'L', 'XL'], color: 'Negro', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800', description: 'Pantalón cargo táctico con tiras ajustables y múltiples bolsillos funcionales.',
+    reviews: [
+      { id: 1, user: 'Esteban P.', rating: 5, comment: 'Los bolsillos son súper amplios y la tela es muy resistente.', date: '22/10/2026' }
+    ]
+  },
+  { 
+    id: '3', name: 'BALE Cyan Monogram Tee', category: 'Remeras', price: 42000, originalPrice: 42000, isPromo: true, promoType: '2x1', discount: 0, stock: 25, sizes: ['S', 'M', 'L', 'XL', 'XXL'], color: 'Blanco/Celeste', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=800', description: 'Remera 100% algodón peinado 24/1. Corte boxy fit exclusivo con estampa BL frontal.',
+    reviews: [
+      { id: 1, user: 'Joaquín G.', rating: 5, comment: 'El estampado celeste cyan resalta un montón en persona.', date: '01/11/2026' }
+    ]
+  },
+  { id: '4', name: 'BALE Urban Puffer Jacket', category: 'Abrigos', price: 116000, originalPrice: 145000, isPromo: true, promoType: 'percentage', discount: 20, stock: 5, sizes: ['M', 'L', 'XL'], color: 'Negro Mate', image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800', description: 'Campera inflable térmica resistente al agua con forrería interior celeste.', reviews: [] },
+  { id: '5', name: 'BALE Classic Oxford Shirt', category: 'Camisas', price: 68000, stock: 14, sizes: ['S', 'M', 'L', 'XL'], color: 'Blanco', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800', description: 'Camisa manga larga Oxford con botones de resina y logo BL bordado en tono pastel.', reviews: [] },
+  { id: '6', name: 'BALE Cyan Line Sneakers', category: 'Calzado', price: 120000, stock: 9, sizes: ['39', '40', '41', '42', '43', '44'], color: 'Negro/Blanco/Celeste', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=800', description: 'Zapatillas urbanas de cuero sintético premium y suela reforzada de goma.', reviews: [] },
+  { id: '7', name: 'BALE Signature Cap', category: 'Accesorios', price: 28000, stock: 30, sizes: ['Único'], color: 'Negro', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=800', description: 'Gorra de gabardina premium con logo bordado en 3D color celeste cyan y ajuste metálico.', reviews: [] },
+  { id: '8', name: 'Black Void Oversized Tee', category: 'Remeras', price: 34000, originalPrice: 42500, isPromo: true, promoType: 'percentage', discount: 20, stock: 18, sizes: ['M', 'L', 'XL', 'XXL'], color: 'Negro Washed', image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=800', description: 'Remera con proceso de lavado desgastado. Corte extra amplio y caída pesada.', reviews: [] },
+  { id: '9', name: 'Tech Parachute Pants', category: 'Pantalones', price: 85000, stock: 10, sizes: ['S', 'M', 'L'], color: 'Gris Oscuro', image: 'https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=800', description: 'Pantalón estilo paracaídas ultra liviano con elásticos ajustables en la botamanga.', reviews: [] }
+];
+
+// Puntos de Retiro / Locales Físicos
+const STORES = [
+  { id: 1, name: 'BALE Flagship Morón', address: '25 de Mayo 280, Morón', hours: 'Lun a Sáb: 10:00 - 20:00 hs', status: 'Abierto hoy' },
+  { id: 2, name: 'BALE Studio Haedo', address: 'Av. Rivadavia 16100 (cerca de Banco Provincia), Haedo', hours: 'Lun a Sáb: 09:30 - 19:30 hs', status: 'Abierto hoy' },
+  { id: 3, name: 'BALE Palermo Concept', address: 'Honduras 4800, Palermo, CABA', hours: 'Lun a Dom: 11:00 - 20:30 hs', status: 'Abierto hoy' }
 ];
 
 // Usuarios Registrados Iniciales para Administración de Cuentas
@@ -105,13 +128,30 @@ export default function App() {
   const [showRegister, setShowRegister] = useState(false);
 
   const [activeVersion, setActiveVersion] = useState('v3'); // v1, v2, v3
-  const [currentTab, setCurrentTab] = useState('shop'); // 'shop', 'admin', 'my-orders'
+  const [currentTab, setCurrentTab] = useState('shop'); // 'shop', 'admin', 'my-orders', 'stores'
   const [adminSubTab, setAdminSubTab] = useState('inventory'); // 'inventory', 'promos', 'users', 'orders'
   
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [orders, setOrders] = useState(INITIAL_ORDERS);
   const [registeredUsers, setRegisteredUsers] = useState(INITIAL_USERS);
   const [selectedUserDetail, setSelectedUserDetail] = useState(null);
+
+  // ESTADOS NUEVOS (FAVORITOS, GUÍA DE TALLES, CUPONES, RESEÑAS)
+  const [wishlist, setWishlist] = useState([]);
+  const [onlyWishlistFilter, setOnlyWishlistFilter] = useState(false);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [userHeight, setUserHeight] = useState('');
+  const [userWeight, setUserWeight] = useState('');
+  const [recommendedSize, setRecommendedSize] = useState(null);
+
+  // CUPONES EN CHECKOUT
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [couponNotice, setCouponNotice] = useState('');
+
+  // FORMULARIO RESEÑAS
+  const [newRating, setNewRating] = useState(5);
+  const [newComment, setNewComment] = useState('');
 
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -129,6 +169,17 @@ export default function App() {
   const showNotice = (msg, type = 'success') => {
     setNotification({ msg, type });
     setTimeout(() => setNotification(null), 3500);
+  };
+
+  // Toggle Wishlist
+  const toggleWishlist = (productId) => {
+    if (wishlist.includes(productId)) {
+      setWishlist(wishlist.filter(id => id !== productId));
+      showNotice('Prenda removida de favoritos');
+    } else {
+      setWishlist([...wishlist, productId]);
+      showNotice('¡Agregado a tus favoritos!');
+    }
   };
 
   // Carrito handlers
@@ -156,7 +207,66 @@ export default function App() {
     setCart(cart.filter(item => item.key !== key));
   };
 
-  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotalCart = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const cartTotal = subtotalCart * (1 - appliedDiscount / 100);
+
+  // Aplicar Cupón
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    const code = couponCode.trim().toUpperCase();
+    if (code === 'BALE10') {
+      setAppliedDiscount(10);
+      setCouponNotice('¡Cupón BALE10 (10% OFF) aplicado!');
+    } else if (code === 'UADE2026') {
+      setAppliedDiscount(20);
+      setCouponNotice('¡Cupón UADE2026 (20% OFF) aplicado!');
+    } else if (code === 'AGUS25') {
+      setAppliedDiscount(25);
+      setCouponNotice('¡Cupón VIP AGUS25 (25% OFF) aplicado!');
+    } else {
+      setAppliedDiscount(0);
+      setCouponNotice('Cupón no válido');
+    }
+  };
+
+  // Calcular Talle Recomendado
+  const handleCalculateSize = (e) => {
+    e.preventDefault();
+    const h = Number(userHeight);
+    const w = Number(userWeight);
+    if (!h || !w) return;
+
+    if (h < 170 && w < 68) setRecommendedSize('S');
+    else if (h <= 178 && w <= 78) setRecommendedSize('M');
+    else if (h <= 186 && w <= 88) setRecommendedSize('L');
+    else setRecommendedSize('XL');
+  };
+
+  // Publicar Reseña
+  const handleAddReview = (e) => {
+    e.preventDefault();
+    if (!newComment.trim() || !selectedProduct) return;
+
+    const reviewObj = {
+      id: Date.now(),
+      user: user ? user.email.split('@')[0] : 'Cliente BALE',
+      rating: Number(newRating),
+      comment: newComment,
+      date: new Date().toLocaleDateString('es-AR')
+    };
+
+    const updated = products.map(p => {
+      if (p.id === selectedProduct.id) {
+        return { ...p, reviews: [reviewObj, ...(p.reviews || [])] };
+      }
+      return p;
+    });
+
+    setProducts(updated);
+    setSelectedProduct({ ...selectedProduct, reviews: [reviewObj, ...(selectedProduct.reviews || [])] });
+    setNewComment('');
+    showNotice('¡Gracias por tu opinión!');
+  };
 
   // Proceso de Compra (Checkout)
   const handleCheckout = (e) => {
@@ -203,6 +313,8 @@ export default function App() {
     setOrders([newOrder, ...orders]);
     setRegisteredUsers(updatedUsers);
     setCart([]);
+    setAppliedDiscount(0);
+    setCouponCode('');
     setIsCartOpen(false);
     setCheckoutStep(1);
     showNotice(`¡Pedido #${newOrder.id} realizado con éxito!`);
@@ -253,7 +365,8 @@ export default function App() {
   const filteredProducts = products.filter(p => {
     const matchesCat = selectedCategory === 'Todas' || p.category === selectedCategory;
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCat && matchesSearch;
+    const matchesWishlist = !onlyWishlistFilter || wishlist.includes(p.id);
+    return matchesCat && matchesSearch && matchesWishlist;
   });
 
   return (
@@ -297,13 +410,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           
           {/* LOGO BALE */}
-          <button onClick={() => setCurrentTab('shop')} className="text-left hover:opacity-90 transition">
+          <button onClick={() => { setCurrentTab('shop'); setOnlyWishlistFilter(false); }} className="text-left hover:opacity-90 transition">
             <BaleMonogramLogo size="md" />
           </button>
 
           {/* BUSCADOR (SOLO V2 y V3) */}
           {activeVersion !== 'v1' && (
-            <div className="hidden md:flex items-center bg-neutral-950 border border-neutral-800 rounded-full px-4 py-2 w-80 focus-within:border-[#00C3FF] transition-all">
+            <div className="hidden md:flex items-center bg-neutral-950 border border-neutral-800 rounded-full px-4 py-2 w-72 focus-within:border-[#00C3FF] transition-all">
               <Search className="w-4 h-4 text-neutral-400 mr-2" />
               <input
                 type="text"
@@ -316,7 +429,39 @@ export default function App() {
           )}
 
           {/* MENÚ DE ACCIONES */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* SUCURSALES / STORE LOCATOR */}
+            <button
+              onClick={() => setCurrentTab(currentTab === 'stores' ? 'shop' : 'stores')}
+              className={`p-2 sm:px-3 sm:py-2 rounded-lg border text-xs flex items-center gap-1.5 transition ${
+                currentTab === 'stores' ? 'bg-[#00C3FF] text-black font-bold border-[#00C3FF]' : 'border-neutral-800 text-neutral-400 hover:text-white'
+              }`}
+              title="Locales y Puntos de Retiro"
+            >
+              <MapPin className="w-4 h-4" />
+              <span className="hidden lg:inline">Locales</span>
+            </button>
+
+            {/* BOTÓN WISHLIST / FAVORITOS */}
+            <button
+              onClick={() => {
+                setCurrentTab('shop');
+                setOnlyWishlistFilter(!onlyWishlistFilter);
+              }}
+              className={`relative p-2 sm:px-3 sm:py-2 rounded-lg border text-xs flex items-center gap-1.5 transition ${
+                onlyWishlistFilter ? 'bg-red-600 text-white border-red-500 font-bold' : 'border-neutral-800 text-neutral-400 hover:text-white'
+              }`}
+              title="Favoritos"
+            >
+              <Heart className={`w-4 h-4 ${wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+              <span className="hidden sm:inline">Favoritos</span>
+              {wishlist.length > 0 && (
+                <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
+
             <button
               onClick={() => setIsDocsOpen(true)}
               className="flex items-center gap-1.5 text-xs text-[#00C3FF] bg-[#00C3FF]/10 border border-[#00C3FF]/30 px-3 py-2 rounded-lg hover:bg-[#00C3FF]/20 transition"
@@ -393,43 +538,50 @@ export default function App() {
           <div>
             
             {/* 🖼️ HERO BANNER ESTÁTICO HORIZONTAL DE CAMPAÑA MASCULINA */}
-            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[420px] flex items-center justify-center group shadow-2xl">
-              {/* IMAGEN EDITORIAL DE ALTA CALIDAD - GRUPO DE HOMBRES CON PRENDAS BALE */}
-              <img
-                src="https://g-o3tmdk99rtg.v.ai.lostpixel.com/f/image_2.png"
-                alt="BALE Campaña Colectiva"
-                className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 group-hover:scale-[1.03] transition-all duration-1000 ease-out"
-              />
-              
-              {/* OVERLAY DEGRADADO OSCURO PARA LECTURA */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent"></div>
-
-              {/* CONTENIDO DEL BANNER HERO */}
-              <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="space-y-5 max-w-xl text-center md:text-left">
-                  <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
-                    <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span> NUEVA COLECCIÓN 2026
-                  </span>
-                  <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase drop-shadow-2xl">
-                    URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
-                  </h1>
-                  <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
-                    Descubrí la nueva línea de indumentaria masculina. Corte minimalista, diseño urbano y materiales premium fabricados en Buenos Aires.
-                  </p>
-                  <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })} className="mt-4 flex items-center gap-2 bg-white text-black font-black px-6 py-3 rounded-xl uppercase text-xs hover:bg-[#00C3FF] transition shadow-xl w-fit mx-auto md:mx-0">
-                    Ver Catálogo <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+            {!onlyWishlistFilter && (
+              <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[420px] flex items-center justify-center group shadow-2xl">
+                {/* IMAGEN EDITORIAL DE ALTA CALIDAD - GRUPO DE HOMBRES CON PRENDAS BALE */}
+                <img
+                  src="https://g-o3tmdk99rtg.v.ai.lostpixel.com/f/image_2.png"
+                  alt="BALE Campaña Colectiva"
+                  className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 group-hover:scale-[1.03] transition-all duration-1000 ease-out"
+                />
                 
-                <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/50 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
-                  <BaleMonogramLogo size="lg" />
-                  <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
+                {/* OVERLAY DEGRADADO OSCURO PARA LECTURA */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent"></div>
+
+                {/* CONTENIDO DEL BANNER HERO */}
+                <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="space-y-5 max-w-xl text-center md:text-left">
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
+                      <span className="w-2 h-2 rounded-full bg-[#00C3FF] animate-pulse"></span> NUEVA COLECCIÓN 2026
+                    </span>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase drop-shadow-2xl">
+                      URBAN ESSENTIALS <span className="text-[#00C3FF]">BALE</span>
+                    </h1>
+                    <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                      Descubrí la nueva línea de indumentaria masculina. Corte minimalista, diseño urbano y materiales premium fabricados en Buenos Aires.
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+                      <button onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })} className="flex items-center gap-2 bg-white text-black font-black px-6 py-3 rounded-xl uppercase text-xs hover:bg-[#00C3FF] transition shadow-xl">
+                        Ver Catálogo <ArrowRight className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => setIsSizeGuideOpen(true)} className="flex items-center gap-2 bg-neutral-900/80 border border-neutral-700 hover:border-[#00C3FF] text-white font-bold px-5 py-3 rounded-xl text-xs transition backdrop-blur-md">
+                        <Ruler className="w-4 h-4 text-[#00C3FF]" /> Guía de Talles
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/50 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
+                    <BaleMonogramLogo size="lg" />
+                    <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* 📸 FASE 2: LOOKBOOK / MODELOS MASCULINOS (SOLO VISIBLE EN V2 Y V3) */}
-            {activeVersion !== 'v1' && (
+            {activeVersion !== 'v1' && !onlyWishlistFilter && (
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
                   <div>
@@ -482,9 +634,9 @@ export default function App() {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => setSelectedCategory(cat)}
+                      onClick={() => { setSelectedCategory(cat); setOnlyWishlistFilter(false); }}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                        selectedCategory === cat
+                        selectedCategory === cat && !onlyWishlistFilter
                           ? 'bg-[#00C3FF] text-black shadow-lg shadow-[#00C3FF]/20'
                           : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
                       }`}
@@ -493,81 +645,135 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-                <div className="text-xs text-neutral-500">
-                  Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
-                </div>
+
+                {onlyWishlistFilter ? (
+                  <div className="flex items-center gap-2 text-xs text-red-400 font-bold bg-red-950/40 border border-red-500/30 px-3 py-1.5 rounded-lg">
+                    <Heart className="w-4 h-4 fill-red-400" /> Mostrando tus Favoritos
+                    <button onClick={() => setOnlyWishlistFilter(false)} className="ml-2 text-neutral-400 hover:text-white underline">Ver Todo</button>
+                  </div>
+                ) : (
+                  <div className="text-xs text-neutral-500">
+                    Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
+                  </div>
+                )}
               </div>
             )}
 
             {/* GRILLA DE PRODUCTOS CON PROMOCIONES */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="group bg-neutral-900/60 border border-neutral-800/80 hover:border-[#00C3FF]/50 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col hover:shadow-xl hover:shadow-[#00C3FF]/5"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-neutral-950">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30 z-10">
-                      {product.category}
-                    </span>
+              {filteredProducts.map((product) => {
+                const isFav = wishlist.includes(product.id);
+                return (
+                  <div
+                    key={product.id}
+                    className="group bg-neutral-900/60 border border-neutral-800/80 hover:border-[#00C3FF]/50 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col hover:shadow-xl hover:shadow-[#00C3FF]/5 relative"
+                  >
+                    {/* BOTÓN WISHLIST SOBRE LA IMAGEN */}
+                    <button
+                      onClick={() => toggleWishlist(product.id)}
+                      className="absolute top-3 right-3 z-20 p-2 bg-black/60 backdrop-blur-md rounded-full text-white hover:scale-110 transition border border-neutral-700"
+                      title="Guardar en Favoritos"
+                    >
+                      <Heart className={`w-4 h-4 ${isFav ? 'fill-red-500 text-red-500' : 'text-neutral-400'}`} />
+                    </button>
 
-                    {/* BADGE DE OFERTA ANIMADO */}
-                    {product.isPromo && (
-                      <span className="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase animate-pulse shadow-lg shadow-red-600/40 z-10">
-                        {product.promoType === '2x1' ? 'PROMO 2X1' : `${product.discount}% OFF`}
+                    <div className="relative aspect-square overflow-hidden bg-neutral-950">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[10px] uppercase font-bold text-[#00C3FF] px-2.5 py-1 rounded-md border border-[#00C3FF]/30 z-10">
+                        {product.category}
                       </span>
-                    )}
 
-                    {product.stock < 5 && (
-                      <span className={`absolute ${product.isPromo ? 'bottom-3 right-3' : 'top-3 right-3'} bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md z-10`}>
-                        Últimas {product.stock} un.
-                      </span>
-                    )}
-                  </div>
+                      {/* BADGE DE OFERTA ANIMADO */}
+                      {product.isPromo && (
+                        <span className="absolute bottom-3 left-3 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase animate-pulse shadow-lg shadow-red-600/40 z-10">
+                          {product.promoType === '2x1' ? 'PROMO 2X1' : `${product.discount}% OFF`}
+                        </span>
+                      )}
 
-                  <div className="p-5 flex flex-col flex-1 justify-between">
-                    <div>
-                      <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
-                        {product.name}
-                      </h3>
-                      <p className="text-neutral-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
+                      {product.stock < 5 && (
+                        <span className="absolute top-3 right-12 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-md z-10">
+                          Últimas {product.stock} un.
+                        </span>
+                      )}
                     </div>
 
-                    <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                    <div className="p-5 flex flex-col flex-1 justify-between">
                       <div>
-                        <span className="text-xs text-neutral-500 block">Precio</span>
-                        {product.isPromo && product.promoType === 'percentage' ? (
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-neutral-500 line-through">
-                              ${product.originalPrice?.toLocaleString('es-AR')}
-                            </span>
-                            <span className="text-lg font-black text-[#00C3FF]">
-                              ${product.price.toLocaleString('es-AR')}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-lg font-black text-white">
-                            ${product.price.toLocaleString('es-AR')}
-                          </span>
-                        )}
+                        <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
+                          {product.name}
+                        </h3>
+                        <p className="text-neutral-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+                          {product.description}
+                        </p>
                       </div>
 
-                      <button
-                        onClick={() => setSelectedProduct(product)}
-                        className="flex items-center gap-1.5 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
-                      >
-                        <span>Ver Talles</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                        <div>
+                          <span className="text-xs text-neutral-500 block">Precio</span>
+                          {product.isPromo && product.promoType === 'percentage' ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-semibold text-neutral-500 line-through">
+                                ${product.originalPrice?.toLocaleString('es-AR')}
+                              </span>
+                              <span className="text-lg font-black text-[#00C3FF]">
+                                ${product.price.toLocaleString('es-AR')}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-lg font-black text-white">
+                              ${product.price.toLocaleString('es-AR')}
+                            </span>
+                          )}
+                        </div>
+
+                        <button
+                          onClick={() => setSelectedProduct(product)}
+                          className="flex items-center gap-1.5 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
+                        >
+                          <span>Ver Talles</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB SUCURSALES / STORE LOCATOR */}
+        {currentTab === 'stores' && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
+                <MapPin className="w-6 h-6 text-[#00C3FF]" /> Sucursales & Puntos de Retiro BALE
+              </h2>
+              <p className="text-xs text-neutral-400 mt-1">Retirá tus compras gratis en nuestros locales oficiales en Gran Buenos Aires y CABA.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {STORES.map((st) => (
+                <div key={st.id} className="p-6 bg-neutral-900/60 border border-neutral-800 rounded-2xl space-y-4 hover:border-[#00C3FF]/50 transition">
+                  <div className="flex justify-between items-start">
+                    <h3 className="font-bold text-white text-base">{st.name}</h3>
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold uppercase">
+                      {st.status}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-xs text-neutral-300">
+                    <p className="flex items-center gap-2 text-neutral-400">
+                      <MapPin className="w-4 h-4 text-[#00C3FF]" /> {st.address}
+                    </p>
+                    <p className="text-neutral-500">{st.hours}</p>
+                  </div>
+                  <button onClick={() => showNotice(`Punto de retiro seleccionado: ${st.name}`)} className="w-full bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white font-bold py-2.5 rounded-xl text-xs uppercase transition">
+                    Elegir punto de retiro
+                  </button>
                 </div>
               ))}
             </div>
@@ -935,6 +1141,60 @@ export default function App() {
         )}
       </main>
 
+      {/* MODAL GUÍA DE TALLES INTERACTIVA */}
+      {isSizeGuideOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full p-6 space-y-6 relative">
+            <button onClick={() => setIsSizeGuideOpen(false)} className="absolute top-4 right-4 text-neutral-400 hover:text-white">
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-2 border-b border-neutral-800 pb-4">
+              <Ruler className="w-6 h-6 text-[#00C3FF]" />
+              <h3 className="text-lg font-black text-white uppercase">Guía de Talles BALE</h3>
+            </div>
+
+            <form onSubmit={handleCalculateSize} className="p-4 bg-black/50 border border-neutral-800 rounded-xl space-y-3">
+              <span className="text-xs font-bold text-[#00C3FF] uppercase block">Calculador Automático de Talle</span>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  placeholder="Altura (cm) Ej: 175"
+                  value={userHeight}
+                  onChange={(e) => setUserHeight(e.target.value)}
+                  className="bg-neutral-950 border border-neutral-800 p-2.5 rounded-xl text-xs text-white outline-none focus:border-[#00C3FF]"
+                />
+                <input
+                  type="number"
+                  placeholder="Peso (kg) Ej: 72"
+                  value={userWeight}
+                  onChange={(e) => setUserWeight(e.target.value)}
+                  className="bg-neutral-950 border border-neutral-800 p-2.5 rounded-xl text-xs text-white outline-none focus:border-[#00C3FF]"
+                />
+              </div>
+              <button type="submit" className="w-full bg-[#00C3FF] text-black font-bold py-2 rounded-xl text-xs uppercase">
+                Calcular mi Talle Ideal
+              </button>
+              {recommendedSize && (
+                <div className="text-center pt-2 text-xs text-emerald-400 font-bold">
+                  Talle recomendado para vos: <span className="text-base text-white underline">{recommendedSize}</span>
+                </div>
+              )}
+            </form>
+
+            <div className="space-y-2 text-xs">
+              <span className="font-bold text-neutral-400 block">Medidas de Referencia (Remeras / Hoodies):</span>
+              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 grid grid-cols-4 gap-2 text-center text-[11px]">
+                <div><strong className="text-white block">Talle</strong>S<br/>M<br/>L<br/>XL</div>
+                <div><strong className="text-white block">Pecho</strong>52 cm<br/>55 cm<br/>58 cm<br/>62 cm</div>
+                <div><strong className="text-white block">Largo</strong>70 cm<br/>73 cm<br/>76 cm<br/>79 cm</div>
+                <div><strong className="text-white block">Manga</strong>60 cm<br/>62 cm<br/>64 cm<br/>66 cm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* MODAL DETALLE DE USUARIO ADMIN */}
       {selectedUserDetail && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
@@ -977,10 +1237,10 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DETALLE DE PRODUCTO */}
+      {/* MODAL DETALLE DE PRODUCTO Y RESEÑAS */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
             <button
               onClick={() => setSelectedProduct(null)}
               className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-85 transition z-10"
@@ -988,76 +1248,128 @@ export default function App() {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="relative">
-              <img src={selectedProduct.image} className="w-full h-64 object-cover" />
-              {selectedProduct.isPromo && (
-                <span className="absolute bottom-4 right-4 bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-md uppercase shadow-lg shadow-red-600/40">
-                  {selectedProduct.promoType === '2x1' ? 'PROMO 2X1 EXCLUSIVA' : `${selectedProduct.discount}% OFF EXCLUSIVO`}
-                </span>
-              )}
-            </div>
-
-            <div className="p-6 space-y-4">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-[#00C3FF] bg-[#00C3FF]/10 px-2.5 py-1 rounded border border-[#00C3FF]/30">
-                  {selectedProduct.category}
-                </span>
-                <h2 className="text-2xl font-black text-white mt-2">{selectedProduct.name}</h2>
-                <p className="text-xs text-neutral-400 mt-2 leading-relaxed">{selectedProduct.description}</p>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-neutral-300 uppercase mb-2">Selecciona tu Talle:</label>
-                <div className="flex gap-2 flex-wrap">
-                  {selectedProduct.sizes.map((sz) => (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedProduct({ ...selectedProduct, activeSize: sz })}
-                      className={`flex-1 min-w-[60px] py-2 rounded-xl text-xs font-bold border transition ${
-                        selectedProduct.activeSize === sz
-                          ? 'border-[#00C3FF] bg-[#00C3FF] text-black'
-                          : 'border-neutral-800 bg-neutral-950 text-white hover:border-neutral-700'
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-neutral-500 block">Precio Final</span>
-                  {selectedProduct.isPromo && selectedProduct.promoType === 'percentage' ? (
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-neutral-500 line-through">
-                        ${selectedProduct.originalPrice?.toLocaleString('es-AR')}
-                      </span>
-                      <span className="text-2xl font-black text-[#00C3FF]">
-                        ${selectedProduct.price.toLocaleString('es-AR')}
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-2xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
+            <div className="overflow-y-auto p-6 space-y-6">
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="relative w-full md:w-1/2">
+                  <img src={selectedProduct.image} className="w-full h-64 object-cover rounded-xl" />
+                  {selectedProduct.isPromo && (
+                    <span className="absolute bottom-3 right-3 bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase">
+                      {selectedProduct.promoType === '2x1' ? 'PROMO 2X1' : `${selectedProduct.discount}% OFF`}
+                    </span>
                   )}
                 </div>
+                <div className="space-y-4 flex-1">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-[#00C3FF] bg-[#00C3FF]/10 px-2.5 py-1 rounded border border-[#00C3FF]/30">
+                      {selectedProduct.category}
+                    </span>
+                    <h2 className="text-2xl font-black text-white mt-2">{selectedProduct.name}</h2>
+                    <p className="text-xs text-neutral-400 mt-2">{selectedProduct.description}</p>
+                  </div>
 
-                <button
-                  onClick={() => {
-                    addToCart(selectedProduct, selectedProduct.activeSize);
-                    setSelectedProduct(null);
-                  }}
-                  className="bg-[#00C3FF] text-black hover:bg-[#00C3FF]/90 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-[#00C3FF]/20"
-                >
-                  Agregar a la Bolsa
-                </button>
+                  <div>
+                    <label className="block text-xs font-bold text-neutral-300 uppercase mb-2">Selecciona tu Talle:</label>
+                    <div className="flex gap-2 flex-wrap">
+                      {selectedProduct.sizes.map((sz) => (
+                        <button
+                          key={sz}
+                          onClick={() => setSelectedProduct({ ...selectedProduct, activeSize: sz })}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
+                            selectedProduct.activeSize === sz
+                              ? 'border-[#00C3FF] bg-[#00C3FF] text-black'
+                              : 'border-neutral-800 bg-neutral-950 text-white hover:border-neutral-700'
+                          }`}
+                        >
+                          {sz}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between">
+                    <div>
+                      {selectedProduct.isPromo && selectedProduct.promoType === 'percentage' ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold text-neutral-500 line-through">
+                            ${selectedProduct.originalPrice?.toLocaleString('es-AR')}
+                          </span>
+                          <span className="text-xl font-black text-[#00C3FF]">
+                            ${selectedProduct.price.toLocaleString('es-AR')}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-xl font-black text-white">${selectedProduct.price.toLocaleString('es-AR')}</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        addToCart(selectedProduct, selectedProduct.activeSize);
+                        setSelectedProduct(null);
+                      }}
+                      className="bg-[#00C3FF] text-black font-bold px-5 py-2.5 rounded-xl text-xs uppercase hover:bg-[#00C3FF]/90 transition"
+                    >
+                      Agregar a la Bolsa
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* MÓDULO RESEÑAS Y OPINIONES */}
+              <div className="border-t border-neutral-800 pt-6 space-y-4">
+                <h3 className="font-bold text-white text-sm uppercase flex items-center gap-2">
+                  <Star className="w-4 h-4 text-amber-400 fill-amber-400" /> Opiniones de Clientes ({selectedProduct.reviews?.length || 0})
+                </h3>
+
+                {/* PUBLICAR RESEÑA */}
+                <form onSubmit={handleAddReview} className="p-4 bg-black/40 border border-neutral-800 rounded-xl space-y-3">
+                  <span className="text-xs font-bold text-neutral-300 block">Dejá tu valoración:</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <select
+                      value={newRating}
+                      onChange={(e) => setNewRating(e.target.value)}
+                      className="bg-neutral-950 border border-neutral-800 rounded-lg p-2 text-xs text-amber-400 font-bold"
+                    >
+                      <option value="5">★★★★★ (5/5)</option>
+                      <option value="4">★★★★☆ (4/5)</option>
+                      <option value="3">★★★☆☆ (3/5)</option>
+                    </select>
+                    <input
+                      type="text"
+                      placeholder="Escribí tu comentario sobre la prenda..."
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="flex-1 min-w-[200px] bg-neutral-950 border border-neutral-800 p-2 rounded-xl text-xs text-white outline-none focus:border-[#00C3FF]"
+                    />
+                    <button type="submit" className="bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+                      Publicar
+                    </button>
+                  </div>
+                </form>
+
+                {/* LISTA DE OPINIONES */}
+                <div className="space-y-3">
+                  {selectedProduct.reviews && selectedProduct.reviews.length > 0 ? (
+                    selectedProduct.reviews.map((rev) => (
+                      <div key={rev.id} className="p-3 bg-neutral-950 border border-neutral-800/80 rounded-xl space-y-1 text-xs">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-white">{rev.user}</span>
+                          <span className="text-amber-400 font-mono">{'★'.repeat(rev.rating)}</span>
+                        </div>
+                        <p className="text-neutral-400">{rev.comment}</p>
+                        <span className="text-[10px] text-neutral-600 block">{rev.date}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-neutral-500">Sé el primero en opinar sobre esta prenda.</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* DRAWER DEL CARRITO / CHECKOUT */}
+      {/* DRAWER DEL CARRITO / CHECKOUT + CUPONES */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
           <div className="w-full max-w-md bg-neutral-950 border-l border-neutral-800 h-full p-6 flex flex-col justify-between overflow-y-auto">
@@ -1106,13 +1418,45 @@ export default function App() {
 
             {cart.length > 0 && (
               <div className="pt-6 border-t border-neutral-800 space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Subtotal</span>
-                  <span className="font-bold text-white">${cartTotal.toLocaleString('es-AR')}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Envío en Argentina</span>
-                  <span className="text-[#00C3FF] font-bold">GRATIS</span>
+                {/* INGRESO DE CUPÓN DE DESCUENTO */}
+                <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Ticket className="w-4 h-4 text-neutral-500 absolute left-3 top-3" />
+                    <input
+                      type="text"
+                      placeholder="Cupón (ej: BALE10)"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white uppercase outline-none focus:border-[#00C3FF]"
+                    />
+                  </div>
+                  <button type="submit" className="bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white font-bold px-4 rounded-xl text-xs transition">
+                    Aplicar
+                  </button>
+                </form>
+                {couponNotice && (
+                  <p className={`text-[11px] font-bold ${appliedDiscount > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{couponNotice}</p>
+                )}
+
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between items-center text-neutral-400">
+                    <span>Subtotal</span>
+                    <span>${subtotalCart.toLocaleString('es-AR')}</span>
+                  </div>
+                  {appliedDiscount > 0 && (
+                    <div className="flex justify-between items-center text-emerald-400 font-bold">
+                      <span>Descuento ({appliedDiscount}%)</span>
+                      <span>-${(subtotalCart * (appliedDiscount / 100)).toLocaleString('es-AR')}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center text-sm font-bold text-white pt-2 border-t border-neutral-800">
+                    <span>Total Final</span>
+                    <span className="text-[#00C3FF] font-black text-base">${cartTotal.toLocaleString('es-AR')}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-neutral-500 text-[11px]">
+                    <span>Envío en Argentina</span>
+                    <span className="text-[#00C3FF] font-bold">GRATIS</span>
+                  </div>
                 </div>
 
                 {checkoutStep === 1 ? (
