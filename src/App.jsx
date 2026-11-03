@@ -303,7 +303,7 @@ export default function App() {
 
           {/* BUSCADOR (SOLO V2 y V3) */}
           {activeVersion !== 'v1' && (
-            <div className="hidden md:flex items-center bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2 w-80 focus-within:border-[#00C3FF] transition-all">
+            <div className="hidden md:flex items-center bg-neutral-950 border border-neutral-800 rounded-full px-4 py-2 w-80 focus-within:border-[#00C3FF] transition-all">
               <Search className="w-4 h-4 text-neutral-400 mr-2" />
               <input
                 type="text"
@@ -392,17 +392,17 @@ export default function App() {
         {currentTab === 'shop' && (
           <div>
             
-            {/* 🖼️ HERO BANNER ESTÁTICO HORIZONTAL */}
+            {/* 🖼️ HERO BANNER ESTÁTICO HORIZONTAL DE CAMPAÑA MASCULINA */}
             <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[420px] flex items-center justify-center group shadow-2xl">
-              {/* IMAGEN DE FONDO PANORÁMICA STREETWEAR */}
+              {/* IMAGEN EDITORIAL DE ALTA CALIDAD - GRUPO DE HOMBRES CON PRENDAS BALE */}
               <img
-                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1920"
-                alt="BALE Urban Banner"
-                className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 group-hover:scale-105 transition-transform duration-700"
+                src="https://g-o3tmdk99rtg.v.ai.lostpixel.com/f/image_2.png"
+                alt="BALE Campaña Colectiva"
+                className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 group-hover:scale-[1.03] transition-all duration-1000 ease-out"
               />
               
-              {/* OVERLAY DEGRADADO CROMÁTICO */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent"></div>
+              {/* OVERLAY DEGRADADO OSCURO PARA LECTURA */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent"></div>
 
               {/* CONTENIDO DEL BANNER HERO */}
               <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
@@ -639,7 +639,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
+                <div className="bg-[#121214] border border-neutral-800 rounded-2xl overflow-hidden">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
                       <tr>
@@ -652,7 +652,7 @@ export default function App() {
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
                       {products.map((p) => (
-                        <tr key={p.id} className="hover:bg-neutral-800/40 transition">
+                        <tr key={p.id} className="hover:bg-neutral-850 transition">
                           <td className="p-4 flex items-center gap-3">
                             <img src={p.image} className="w-10 h-10 object-cover rounded-lg bg-black" />
                             <span className="font-bold text-white">{p.name} {p.isPromo && <span className="ml-2 text-[9px] bg-red-600 px-1.5 py-0.5 rounded text-white font-bold">OFERTA</span>}</span>
@@ -719,7 +719,7 @@ export default function App() {
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
                       {products.map((p) => (
-                        <tr key={p.id} className="hover:bg-neutral-800/40 transition">
+                        <tr key={p.id} className="hover:bg-neutral-850 transition">
                           <td className="p-4 font-bold text-white flex items-center gap-2">
                             <img src={p.image} className="w-8 h-8 rounded-lg object-cover" />
                             {p.name}
@@ -815,7 +815,7 @@ export default function App() {
                       )}
 
                       {registeredUsers.map((u) => (
-                        <tr key={u.id} className="hover:bg-neutral-800/40 transition">
+                        <tr key={u.id} className="hover:bg-neutral-85 transition">
                           <td className="p-4 font-bold text-white">{u.name}</td>
                           <td className="p-4 text-neutral-400">{u.email}</td>
                           <td className="p-4">
@@ -845,7 +845,7 @@ export default function App() {
             {/* SUBTAB 4: HISTORIAL GLOBAL DE PEDIDOS Y PAGOS */}
             {adminSubTab === 'orders' && (
               <div className="space-y-4">
-                <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden">
+                <div className="bg-[#121214] border border-neutral-800 rounded-2xl overflow-hidden">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-neutral-950 text-neutral-400 uppercase font-semibold border-b border-neutral-800">
                       <tr>
@@ -859,7 +859,7 @@ export default function App() {
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
                       {orders.map((ord) => (
-                        <tr key={ord.id} className="hover:bg-neutral-800/40 transition">
+                        <tr key={ord.id} className="hover:bg-neutral-85 transition">
                           <td className="p-4 font-bold text-[#00C3FF] font-mono">#{ord.id}</td>
                           <td className="p-4">
                             <div className="font-bold text-white">{ord.customer}</div>
@@ -905,7 +905,7 @@ export default function App() {
             ) : (
               <div className="space-y-4">
                 {orders.map((ord) => (
-                  <div key={ord.id} className="p-6 border border-neutral-800 bg-neutral-900/60 rounded-2xl flex flex-col md:flex-row justify-between gap-4">
+                  <div key={ord.id} className="p-6 border border-neutral-800 bg-[#121214] rounded-2xl flex flex-col md:flex-row justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-white text-base">Orden #{ord.id}</span>
@@ -983,7 +983,7 @@ export default function App() {
           <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative">
             <button
               onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-800 transition z-10"
+              className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-neutral-85 transition z-10"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1081,7 +1081,7 @@ export default function App() {
                   {cart.map((item) => (
                     <div key={item.key} className="pt-4 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <img src={item.image} className="w-14 h-14 object-cover rounded-xl bg-neutral-900" />
+                        <img src={item.image} className="w-14 h-14 object-cover rounded-xl bg-[#121214]" />
                         <div>
                           <h4 className="text-xs font-bold text-white">{item.name}</h4>
                           <span className="text-[10px] text-[#00C3FF] block">Talle: {item.selectedSize}</span>
