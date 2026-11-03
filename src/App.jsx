@@ -392,20 +392,19 @@ export default function App() {
         {currentTab === 'shop' && (
           <div>
             
-            {/* 🎥 FASE 2: BANNER HERO CON VIDEO PROMOCIONAL */}
-            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[450px] flex items-center justify-center group shadow-2xl">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-700"
-              >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-man-walking-in-the-city-at-night-34547-large.mp4" type="video/mp4" />
-              </video>
+            {/* 🖼️ HERO BANNER ESTÁTICO HORIZONTAL */}
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-800 mb-12 min-h-[420px] flex items-center justify-center group shadow-2xl">
+              {/* IMAGEN DE FONDO PANORÁMICA STREETWEAR */}
+              <img
+                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1920"
+                alt="BALE Urban Banner"
+                className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 group-hover:scale-105 transition-transform duration-700"
+              />
               
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30"></div>
+              {/* OVERLAY DEGRADADO CROMÁTICO */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent"></div>
 
+              {/* CONTENIDO DEL BANNER HERO */}
               <div className="relative z-10 p-8 lg:p-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="space-y-5 max-w-xl text-center md:text-left">
                   <span className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full bg-[#00C3FF]/20 text-[#00C3FF] border border-[#00C3FF]/30 backdrop-blur-md">
@@ -422,7 +421,7 @@ export default function App() {
                   </button>
                 </div>
                 
-                <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/40 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
+                <div className="hidden md:block border border-[#00C3FF]/30 p-8 rounded-2xl bg-black/50 backdrop-blur-md text-center shadow-2xl shadow-[#00C3FF]/10 hover:scale-105 transition-transform duration-500">
                   <BaleMonogramLogo size="lg" />
                   <p className="text-xs text-[#00C3FF] mt-5 font-mono font-bold tracking-widest uppercase">The Streetwear Vision</p>
                 </div>
