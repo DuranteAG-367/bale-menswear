@@ -3,7 +3,7 @@ import {
   ShoppingBag, User, Search, SlidersHorizontal, Shield, 
   Trash2, Plus, Edit, RefreshCw, CheckCircle, Package, 
   ChevronRight, X, Lock, FileCode, Check, AlertCircle, ArrowLeft, ArrowRight, Play,
-  Users, Tag, Percent, Eye, CreditCard, Heart, MapPin, Star, Ruler, Ticket
+  Users, Tag, Percent, Eye, CreditCard, Heart, MapPin, Star, Ruler, Ticket, Download
 } from 'lucide-react';
 
 // IMPORTAMOS LA AUTENTICACIÓN Y LOS COMPONENTES (FASE 1)
@@ -144,6 +144,11 @@ export default function App() {
   const [userWeight, setUserWeight] = useState('');
   const [recommendedSize, setRecommendedSize] = useState(null);
 
+  // ESTADOS EXTRA 1 & 3: FILTROS AVANZADOS Y ORDENAMIENTO
+  const [maxPriceFilter, setMaxPriceFilter] = useState(150000);
+  const [selectedSizeFilter, setSelectedSizeFilter] = useState('Todos');
+  const [sortBy, setSortBy] = useState('default'); // 'default', 'price-asc', 'price-desc', 'rating-desc'
+
   // CUPONES EN CHECKOUT
   const [couponCode, setCouponCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
@@ -169,6 +174,44 @@ export default function App() {
   const showNotice = (msg, type = 'success') => {
     setNotification({ msg, type });
     setTimeout(() => setNotification(null), 3500);
+  };
+
+  // ESTADO EXTRA 2: EXPORTAR COMPROBANTE / FACTURA TXT
+  const handleDownloadInvoice = (order) => {
+    const itemsText = order.items
+      .map(item => `  - ${item.name} (${item.selectedSize}) x${item.quantity}: $${(item.price * item.quantity).toLocaleString('es-AR')}`)
+      .join('\n');
+
+    const invoiceContent = `================================================
+           BALE MENSWEAR - COMPROBANTE DE COMPRA
+================================================
+N° Orden: #${order.id}
+Fecha: ${order.date}
+Cliente: ${order.customer}
+Email: ${order.email}
+Dirección de Entrega: ${order.address}
+Medio de Pago: ${order.paymentMethod || 'MercadoPago'}
+Estado: ${order.status}
+------------------------------------------------
+DETALLE DE PRENDAS:
+${itemsText}
+------------------------------------------------
+TOTAL ABONADO: $${order.total.toLocaleString('es-AR')}
+------------------------------------------------
+¡Gracias por confiar en BALE Menswear!
+http://bale-menswear.edu.ar | Buenos Aires, Argentina
+================================================`;
+
+    const blob = new Blob([invoiceContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Comprobante_${order.id}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showNotice(`Comprobante #${order.id} descargado`);
   };
 
   // Toggle Wishlist
@@ -361,13 +404,31 @@ export default function App() {
 
   // Categorías ampliadas con Accesorios
   const categories = ['Todas', 'Remeras', 'Camisas', 'Pantalones', 'Abrigos', 'Calzado', 'Accesorios'];
+  const availableSizes = ['Todos', 'S', 'M', 'L', 'XL', 'XXL', '39', '40', '41', '42', '43', '44', 'Único'];
 
-  const filteredProducts = products.filter(p => {
-    const matchesCat = selectedCategory === 'Todas' || p.category === selectedCategory;
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesWishlist = !onlyWishlistFilter || wishlist.includes(p.id);
-    return matchesCat && matchesSearch && matchesWishlist;
-  });
+  // Helper para calcular rating promedio de producto
+  const getAverageRating = (p) => {
+    if (!p.reviews || p.reviews.length === 0) return 0;
+    const sum = p.reviews.reduce((acc, r) => acc + r.rating, 0);
+    return sum / p.reviews.length;
+  };
+
+  // FILTRADO Y ORDENAMIENTO (CON PRECIO MÁXIMO, TALLE Y CRITERIOS)
+  const filteredProducts = products
+    .filter(p => {
+      const matchesCat = selectedCategory === 'Todas' || p.category === selectedCategory;
+      const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesWishlist = !onlyWishlistFilter || wishlist.includes(p.id);
+      const matchesMaxPrice = p.price <= maxPriceFilter;
+      const matchesSize = selectedSizeFilter === 'Todos' || p.sizes.includes(selectedSizeFilter);
+      return matchesCat && matchesSearch && matchesWishlist && matchesMaxPrice && matchesSize;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'price-asc') return a.price - b.price;
+      if (sortBy === 'price-desc') return b.price - a.price;
+      if (sortBy === 'rating-desc') return getAverageRating(b) - getAverageRating(a);
+      return 0;
+    });
 
   return (
     <div className="min-h-screen bg-[#0A0A0C] text-white font-sans selection:bg-[#00C3FF] selection:text-black">
@@ -629,33 +690,85 @@ export default function App() {
 
             {/* FILTROS Y CATEGORÍAS (V2 Y V3) */}
             {activeVersion !== 'v1' && (
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-neutral-800">
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => { setSelectedCategory(cat); setOnlyWishlistFilter(false); }}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                        selectedCategory === cat && !onlyWishlistFilter
-                          ? 'bg-[#00C3FF] text-black shadow-lg shadow-[#00C3FF]/20'
-                          : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+              <div className="space-y-4 mb-8 pb-4 border-b border-neutral-800">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => { setSelectedCategory(cat); setOnlyWishlistFilter(false); }}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                          selectedCategory === cat && !onlyWishlistFilter
+                            ? 'bg-[#00C3FF] text-black shadow-lg shadow-[#00C3FF]/20'
+                            : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                  {onlyWishlistFilter ? (
+                    <div className="flex items-center gap-2 text-xs text-red-400 font-bold bg-red-950/40 border border-red-500/30 px-3 py-1.5 rounded-lg">
+                      <Heart className="w-4 h-4 fill-red-400" /> Mostrando tus Favoritos
+                      <button onClick={() => setOnlyWishlistFilter(false)} className="ml-2 text-neutral-400 hover:text-white underline">Ver Todo</button>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-neutral-500">
+                      Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
+                    </div>
+                  )}
                 </div>
 
-                {onlyWishlistFilter ? (
-                  <div className="flex items-center gap-2 text-xs text-red-400 font-bold bg-red-950/40 border border-red-500/30 px-3 py-1.5 rounded-lg">
-                    <Heart className="w-4 h-4 fill-red-400" /> Mostrando tus Favoritos
-                    <button onClick={() => setOnlyWishlistFilter(false)} className="ml-2 text-neutral-400 hover:text-white underline">Ver Todo</button>
+                {/* 🎛️ EXTRA 1 & 3: BARRA DE FILTROS AVANZADOS Y ORDENAMIENTO */}
+                <div className="p-4 bg-neutral-950 border border-neutral-800/80 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+                  <div className="flex flex-wrap items-center gap-6 w-full md:w-auto">
+                    {/* Slider Precio Máximo */}
+                    <div className="flex items-center gap-3">
+                      <span className="text-neutral-400 font-bold">Precio Máx:</span>
+                      <input
+                        type="range"
+                        min="25000"
+                        max="150000"
+                        step="5000"
+                        value={maxPriceFilter}
+                        onChange={(e) => setMaxPriceFilter(Number(e.target.value))}
+                        className="accent-[#00C3FF] cursor-pointer"
+                      />
+                      <span className="font-mono text-[#00C3FF] font-bold">${maxPriceFilter.toLocaleString('es-AR')}</span>
+                    </div>
+
+                    {/* Selector de Talle */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-neutral-400 font-bold">Talle:</span>
+                      <select
+                        value={selectedSizeFilter}
+                        onChange={(e) => setSelectedSizeFilter(e.target.value)}
+                        className="bg-neutral-900 border border-neutral-800 text-white rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#00C3FF]"
+                      >
+                        {availableSizes.map(sz => (
+                          <option key={sz} value={sz}>{sz}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                ) : (
-                  <div className="text-xs text-neutral-500">
-                    Mostrando <span className="text-white font-bold">{filteredProducts.length}</span> prendas
+
+                  {/* Ordenamiento Dinámico */}
+                  <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+                    <SlidersHorizontal className="w-4 h-4 text-[#00C3FF]" />
+                    <span className="text-neutral-400 font-bold">Ordenar por:</span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-neutral-900 border border-neutral-800 text-white rounded-lg px-3 py-1.5 text-xs outline-none focus:border-[#00C3FF]"
+                    >
+                      <option value="default">Recomendados</option>
+                      <option value="price-asc">Precio: Menor a Mayor</option>
+                      <option value="price-desc">Precio: Mayor a Menor</option>
+                      <option value="rating-desc">Mejor Valorados ⭐</option>
+                    </select>
                   </div>
-                )}
+                </div>
               </div>
             )}
 
@@ -663,6 +776,7 @@ export default function App() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => {
                 const isFav = wishlist.includes(product.id);
+                const avgRating = getAverageRating(product);
                 return (
                   <div
                     key={product.id}
@@ -703,9 +817,16 @@ export default function App() {
 
                     <div className="p-5 flex flex-col flex-1 justify-between">
                       <div>
-                        <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
-                          {product.name}
-                        </h3>
+                        <div className="flex items-center justify-between gap-2">
+                          <h3 className="font-bold text-white text-base group-hover:text-[#00C3FF] transition">
+                            {product.name}
+                          </h3>
+                          {avgRating > 0 && (
+                            <span className="flex items-center gap-1 text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
+                              <Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {avgRating.toFixed(1)}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-neutral-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">
                           {product.description}
                         </p>
@@ -1048,7 +1169,7 @@ export default function App() {
               </div>
             )}
 
-            {/* SUBTAB 4: HISTORIAL GLOBAL DE PEDIDOS Y PAGOS */}
+            {/* SUBTAB 4: HISTORIAL GLOBAL DE PEDIDOS Y PAGOS + DESCARGAR FACTURA */}
             {adminSubTab === 'orders' && (
               <div className="space-y-4">
                 <div className="bg-[#121214] border border-neutral-800 rounded-2xl overflow-hidden">
@@ -1060,7 +1181,8 @@ export default function App() {
                         <th className="p-4">Medio Pago</th>
                         <th className="p-4">Estado</th>
                         <th className="p-4">Fecha</th>
-                        <th className="p-4 text-right">Monto Total</th>
+                        <th className="p-4">Monto Total</th>
+                        <th className="p-4 text-right">Comprobante</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
@@ -1078,8 +1200,18 @@ export default function App() {
                             </span>
                           </td>
                           <td className="p-4 text-neutral-500">{ord.date}</td>
-                          <td className="p-4 text-right font-mono font-black text-white text-sm">
+                          <td className="p-4 font-mono font-black text-white text-sm">
                             ${ord.total.toLocaleString('es-AR')}
+                          </td>
+                          <td className="p-4 text-right">
+                            {/* EXTRA 2: DESCARGAR FACTURA */}
+                            <button
+                              onClick={() => handleDownloadInvoice(ord)}
+                              className="p-2 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white rounded-lg transition"
+                              title="Descargar Comprobante TXT"
+                            >
+                              <Download className="w-4 h-4" />
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -1091,7 +1223,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 3: MIS COMPRAS (VISTA CLIENTE) */}
+        {/* TAB 3: MIS COMPRAS (VISTA CLIENTE) CON EXPORTAR COMPROBANTE */}
         {currentTab === 'my-orders' && (
           <div className="space-y-6">
             <h2 className="text-2xl font-black text-white uppercase flex items-center gap-2">
@@ -1129,9 +1261,20 @@ export default function App() {
                         ))}
                       </div>
                     </div>
-                    <div className="text-right flex md:flex-col justify-between items-end">
-                      <span className="text-xs text-neutral-500">Total abonado</span>
-                      <span className="text-xl font-black text-white">${ord.total.toLocaleString('es-AR')}</span>
+                    <div className="text-right flex md:flex-col justify-between items-end gap-3">
+                      <div>
+                        <span className="text-xs text-neutral-500 block">Total abonado</span>
+                        <span className="text-xl font-black text-white">${ord.total.toLocaleString('es-AR')}</span>
+                      </div>
+                      
+                      {/* EXTRA 2: BOTÓN DE DESCARGA DE FACTURA / COMPROBANTE */}
+                      <button
+                        onClick={() => handleDownloadInvoice(ord)}
+                        className="flex items-center gap-1.5 bg-neutral-800 hover:bg-[#00C3FF] hover:text-black text-white text-xs font-bold px-3 py-2 rounded-xl transition"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Comprobante</span>
+                      </button>
                     </div>
                   </div>
                 ))}
